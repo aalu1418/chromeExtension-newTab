@@ -18,3 +18,4 @@ Things to include:
 ---
 Notes:
 - [storing api keys](https://medium.com/better-programming/using-environment-variables-in-reactjs-9ad9c5322408)
+- [cors-anywhere](https://cors-anywhere.herokuapp.com/) - [github](https://github.com/Rob--W/cors-anywhere)

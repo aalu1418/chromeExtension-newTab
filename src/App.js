@@ -95,7 +95,7 @@ const Weather = () => {
         .then(response => response.json())
         .then(data => {
           setCurrentWeather(data.currently);
-          setFutureWeather(data.daily.data);
+          setFutureWeather(data.daily.data.slice(0, 5));
           setAlertWeather(data.alerts);
         });
     };
@@ -116,17 +116,52 @@ const Weather = () => {
   return (
     <div className="Weather">
       <input type="text" onKeyDown={enterPress} />
-      {currentWeather && (
-        <div className="Weather-CurrentWeather">{currentWeather.summary}</div>
-      )}
-      {futureWeather && futureWeather.map(day => <div className="Weather-CurrentWeather">{day.icon}</div>)}
-      {alertWeather && <div className="Weather-CurrentWeather">{alertWeather[0].title}</div>}
+      <WeatherDisplay
+        current={currentWeather}
+        future={futureWeather}
+        alert={alertWeather}
+      />
       {locationData && (
         <div className="Weather-Location">
           {locationData.city || locationData.town || locationData.village},{" "}
           {locationData.state}
         </div>
       )}
+    </div>
+  );
+};
+
+const WeatherDisplay = ({ current, future, alert }) => {
+  return (
+    <div className="WeatherDisplay">
+      {current && <CurrentWeather current={current} alert={alert} />}
+      {future && future.map(day => <FutureWeather key={day.time} day={day} />)}
+    </div>
+  );
+};
+
+const FutureWeather = ({ day }) => {
+  return (
+    <div className="FutureWeather">
+      <div className="FutureWeather-Day">
+        {moment.unix(day.time).format("dddd")}
+      </div>
+      <div className="FutureWeather-Icon">{day.icon}
+      </div>
+      <div className="FutureWeather-Temperature">
+        {Math.round(day.temperatureHigh)}
+        {Math.round(day.temperatureLow)}
+      </div>
+      <div className="FutureWeather-Future">{day.summary}</div>
+    </div>
+  );
+};
+
+const CurrentWeather = ({ current, alert }) => {
+  return (
+    <div className="CurrentWeather">
+      {current.summary}
+      {alert && <div>{alert[0].title}</div>}
     </div>
   );
 };

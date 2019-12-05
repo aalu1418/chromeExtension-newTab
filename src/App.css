@@ -3,6 +3,10 @@
 }
 
 .App-Content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
   background-color: black;
 }
@@ -12,13 +16,49 @@
 }
 
 .Clock-Time {
-  font-size: 100pt;
+  font-size: 20vh;
 }
 
 .Clock-Date {
-
+  margin-bottom: 10pt;
 }
 
 .Weather {
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.WeatherDisplay {
+  display: flex;
+  max-width: 1000px;
+  min-height: 25vh;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.FutureWeather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 12.5%;
+  border: 1pt solid white;
+  margin: 1rem 0.25rem;
+}
+
+.FutureWeather-Icon {
+  color: white;
+}
+
+.CurrentWeather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 25%;
+  border: 1pt solid white;
 }

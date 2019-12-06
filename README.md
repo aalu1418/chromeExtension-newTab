@@ -1,5 +1,5 @@
 # presto-tab
-A google chrome extension with time/date, weather powered by Dark Sky, and Presto card balance (using html scraping)
+A google chrome extension with time/date, weather powered by Dark Sky, and ~~Presto card balance~~
 
 ---
 How to build a chrome extension (new tab page):  
@@ -12,6 +12,7 @@ Things to include:
 - Weather
 	- [Dark Sky API](https://darksky.net/dev/docs#forecast-request)
 	- [geocoding](https://locationiq.com/)
+- TTC Updates (twitter api?)
 - ~~Presto Card Balance~~
 	- ~~open a new window & scrape html from there:~~
 

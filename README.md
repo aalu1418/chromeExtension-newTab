@@ -8,12 +8,17 @@ How to build a chrome extension (new tab page):
 ---
 Things to include:  
 - Time
+	- [Moment JS](https://momentjs.com/)
 - Weather
-	- https://darksky.net/dev/docs#forecast-request
-	- [geocoding](https://developers.google.com/maps/documentation/geocoding/start)
-- Presto Card Balance
-	- https://stackoverflow.com/questions/44269313/how-to-check-presto-card-balance-without-an-account-using-only-python-requests
-	- https://medium.com/@bretcameron/how-to-build-a-web-scraper-using-javascript-11d7cd9f77f2
+	- [Dark Sky API](https://darksky.net/dev/docs#forecast-request)
+	- [geocoding](https://locationiq.com/)
+- ~~Presto Card Balance~~
+	- ~~open a new window & scrape html from there:~~
+
+	```Uncaught DOMException: Blocked a frame with origin "..." from accessing a cross-origin frame. at <anonymous>:1:23```
+
+	- ~~[presto-card-js](https://github.com/bitbearstudio/presto-card-js)~~ - CORS errors
+	- ~~[html scraping idea using requests](https://stackoverflow.com/questions/44269313/how-to-check-presto-card-balance-without-an-account-using-only-python-requests)~~ - too difficult to figure out their backend
 
 ---
 Notes:

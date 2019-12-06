@@ -146,8 +146,7 @@ const FutureWeather = ({ day }) => {
       <div className="FutureWeather-Day">
         {moment.unix(day.time).format("dddd")}
       </div>
-      <div className="FutureWeather-Icon">{day.icon}
-      </div>
+      <div className="FutureWeather-Icon">{day.icon}</div>
       <div className="FutureWeather-Temperature">
         {Math.round(day.temperatureHigh)}
         {Math.round(day.temperatureLow)}

@@ -12,6 +12,7 @@ Things to include:
 - Weather
 	- [Dark Sky API](https://darksky.net/dev/docs#forecast-request)
 	- [geocoding](https://locationiq.com/)
+	- [weather icons](https://www.npmjs.com/package/weather-icons)
 - TTC Updates (twitter api?)
 - ~~Presto Card Balance~~
 	- ~~open a new window & scrape html from there:~~

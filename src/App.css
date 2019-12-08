@@ -9,14 +9,26 @@
   justify-content: center;
   min-height: 100vh;
   background-color: black;
+  color: white;
 }
 
 .Clock {
-  color: white;
 }
 
 .Clock-Time {
   font-size: 20vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.Clock-Digits {
+  display: flex;
+  flex-direction: row;
+  margin: 0px 20px;
+}
+
+.Clock-Digit{
+  width: 110px;
 }
 
 .Clock-Date {
@@ -24,7 +36,6 @@
 }
 
 .Weather {
-  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,13 +56,52 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 12.5%;
-  border: 1pt solid white;
-  margin: 1rem 0.25rem;
+  width: 125px;
+  /* border: 1pt solid white; */
+  margin: 2rem 0.25rem;
+  border-radius: 10px;
+  padding: 5px 0px;
+  font-size: 20px;
 }
 
-.FutureWeather-Icon {
-  color: white;
+.Weather-Icon {
+  text-align: center;
+  margin: 15px 0px;
+}
+
+.Weather-Icon.Future {
+  font-size: 50px;
+}
+
+.Weather-Icon.Current {
+  font-size: 75px;
+  position: relative;
+}
+
+.Weather-AlertBase {
+  /* position: absolute; */
+}
+
+.Weather-Alert {
+  position: absolute;
+  left: -5px;
+  top: -15px;
+  z-index: 1;
+  font-size: 20pt;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.Weather-Temperature {
+  margin: 5px;
+  display: flex;
+  width: 65%;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.Weather-LowTemp {
+  opacity: 0.5;
 }
 
 .CurrentWeather {
@@ -59,6 +109,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 25%;
-  border: 1pt solid white;
+  width: 165px;
+  /* border: 1pt solid white; */
+  font-size: 30px;
+  margin: 2rem 0rem;
+  border-radius: 10px;
+  padding: 5px 0px;
 }

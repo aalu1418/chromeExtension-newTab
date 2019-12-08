@@ -1,6 +1,46 @@
 import React from "react";
 import moment from "moment";
 import "./App.css";
+import "../node_modules/weather-icons/css/weather-icons.css";
+
+//weather icons
+const weatherIcons = {
+  "clear-day": "wi-day-sunny",
+  "clear-night": "wi-night-clear",
+  rain: "wi-rain",
+  snow: "wi-snow",
+  sleet: "wi-sleet",
+  wind: "wi-strong-wind",
+  fog: "wi-fog",
+  cloudy: "wi-cloudy",
+  "partly-cloudy-day": "wi-day-sunny-overcast",
+  "partly-cloudy-night": "wi-night-alt-partly-cloudy",
+  hail: "wi-hail",
+  thunderstorm: "wi-thunderstorm",
+  tornado: "wi-tornado"
+};
+
+//algorithm to pick icons based on time & precipitation time
+const weatherIconPicker = (icon, time, sunrise, sunset) => {
+  const modifiableWeather = [
+    "rain",
+    "snow",
+    "sleet",
+    "cloudy",
+    "hail",
+    "thunderstorm"
+  ];
+  if (!modifiableWeather.includes(icon) || !time) {
+    return weatherIcons[icon];
+  } else {
+    const stringArray = weatherIcons[icon].split("-");
+    const dayTime = time > sunrise && time < sunset;
+    const timeModifier = dayTime ? "day" : "night-alt";
+    stringArray.splice(1, 0, timeModifier);
+    // console.log(dayTime, stringArray.join("-"));
+    return stringArray.join("-");
+  }
+};
 
 const App = () => {
   return (
@@ -16,12 +56,17 @@ const App = () => {
 export default App;
 
 const Clock = () => {
-  const [time, setTime] = React.useState(null);
-  const [date, setDate] = React.useState(null);
+  const [time, setTime] = React.useState([]);
+  const [date, setDate] = React.useState("");
 
+  //set clock & update every second
   React.useEffect(() => {
     const setClock = () => {
-      setTime(moment().format("hh mm ss"));
+      setTime(
+        moment()
+          .format("hh mm ss")
+          .split(" ")
+      );
       setDate(moment().format("dddd, DD MMMM YYYY"));
     };
 
@@ -37,7 +82,21 @@ const Clock = () => {
 
   return (
     <div className="Clock">
-      <div className="Clock-Time">{time}</div>
+      <div className="Clock-Time">
+        {time.map((digits, index) => {
+          return (
+            <div key={`clock-${index}`} className="Clock-Digits">
+              {digits.split("").map((digit, ind) => {
+                return (
+                  <div key={`clock-${index}-${ind}`} className="Clock-Digit">
+                    {digit}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
       <div className="Clock-Date">{date}</div>
     </div>
   );
@@ -48,9 +107,9 @@ const Weather = () => {
   const [locationData, setLocationData] = React.useState(
     JSON.parse(localStorage.getItem("locationData"))
   );
-  const [currentWeather, setCurrentWeather] = React.useState(null);
-  const [futureWeather, setFutureWeather] = React.useState(null);
-  const [alertWeather, setAlertWeather] = React.useState(null);
+  const [currentWeather, setCurrentWeather] = React.useState({});
+  const [futureWeather, setFutureWeather] = React.useState([]);
+  const [alertWeather, setAlertWeather] = React.useState({});
 
   //get latitude & longitude on location change
   React.useEffect(() => {
@@ -95,7 +154,7 @@ const Weather = () => {
         .then(response => response.json())
         .then(data => {
           setCurrentWeather(data.currently);
-          setFutureWeather(data.daily.data.slice(0, 5));
+          setFutureWeather(data.daily.data.slice(0, 6));
           setAlertWeather(data.alerts);
         });
     };
@@ -115,17 +174,21 @@ const Weather = () => {
 
   return (
     <div className="Weather">
-      <input type="text" onKeyDown={enterPress} />
-      <WeatherDisplay
-        current={currentWeather}
-        future={futureWeather}
-        alert={alertWeather}
-      />
+      {!locationData && <input type="text" onKeyDown={enterPress} />}
       {locationData && (
-        <div className="Weather-Location">
-          {locationData.city || locationData.town || locationData.village},{" "}
-          {locationData.state}
-        </div>
+        <span>
+          {locationData && (
+            <div className="Weather-Location">
+              {locationData.city || locationData.town || locationData.village},{" "}
+              {locationData.state}
+            </div>
+          )}
+          <WeatherDisplay
+            current={currentWeather}
+            future={futureWeather}
+            alert={alertWeather}
+          />
+        </span>
       )}
     </div>
   );
@@ -134,7 +197,9 @@ const Weather = () => {
 const WeatherDisplay = ({ current, future, alert }) => {
   return (
     <div className="WeatherDisplay">
-      {current && <CurrentWeather current={current} alert={alert} />}
+      {current && (
+        <CurrentWeather current={current} alert={alert} day={future[0]} />
+      )}
       {future && future.map(day => <FutureWeather key={day.time} day={day} />)}
     </div>
   );
@@ -143,24 +208,49 @@ const WeatherDisplay = ({ current, future, alert }) => {
 const FutureWeather = ({ day }) => {
   return (
     <div className="FutureWeather">
-      <div className="FutureWeather-Day">
-        {moment.unix(day.time).format("dddd")}
+      <div className="Weather-Icon Future">
+        <i
+          className={`wi ${weatherIconPicker(
+            day.icon,
+            day.precipIntensityMaxTime || false,
+            day.sunriseTime,
+            day.sunsetTime
+          )}`}
+        ></i>
       </div>
-      <div className="FutureWeather-Icon">{day.icon}</div>
-      <div className="FutureWeather-Temperature">
-        {Math.round(day.temperatureHigh)}
-        {Math.round(day.temperatureLow)}
+      <div>{moment.unix(day.time).format("dddd")}</div>
+      <div className="Weather-Temperature">
+        <span>{Math.round(day.temperatureHigh)}</span>
+        <span className="Weather-LowTemp">
+          {Math.round(day.temperatureLow)}
+        </span>
       </div>
-      <div className="FutureWeather-Future">{day.summary}</div>
+      {false && <div className="FutureWeather-Future">{day.summary}</div>}
     </div>
   );
 };
 
-const CurrentWeather = ({ current, alert }) => {
+const CurrentWeather = ({ current, alert, day }) => {
+  day = { sunriseTime: 0, sunsetTime: 0, ...day };
   return (
     <div className="CurrentWeather">
-      {current.summary}
-      {alert && <div>{alert[0].title}</div>}
+      <div className="Weather-Icon Current">
+        <i
+          className={`wi ${weatherIconPicker(
+            current.icon,
+            current.time,
+            day.sunriseTime,
+            day.sunsetTime
+          )} Weather-AlertBase`}
+        ></i>
+      <i className="wi wi-alien Weather-Alert"></i>
+      </div>
+      <div>Now</div>
+      <div className="Weather-Temperature">
+        <span>{Math.round(current.temperature || null)}</span>
+      </div>
+      {false && alert && <div>{alert[0].title}</div>}
+      {false && current.summary}
     </div>
   );
 };

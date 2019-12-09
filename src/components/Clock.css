@@ -1,0 +1,22 @@
+.Clock {
+}
+
+.Clock-Time {
+  font-size: 25vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.Clock-Digits {
+  display: flex;
+  flex-direction: row;
+  margin: 0px 20px;
+}
+
+.Clock-Digit{
+  width: 120px;
+}
+
+.Clock-Date {
+  margin-bottom: 10pt;
+}

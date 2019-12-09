@@ -2,7 +2,7 @@
   "short_name": "New Tab Weather",
   "name": "New Tab Weather",
   "version": "1.0",
-  "description": "New tab extension that shows a timer and weather - built using React and powered by Dark Sky",
+  "description": "New tab extension that shows a clock and weather (with details) - built using React and powered by Dark Sky",
 
   "manifest_version": 2,
   "incognito": "split",

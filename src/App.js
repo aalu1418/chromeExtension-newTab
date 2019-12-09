@@ -223,7 +223,7 @@ const FutureWeather = ({ day }) => {
   const [index, setIndex] = React.useState(0);
 
   const weatherData = [
-    <TempDisplay text={moment(day.time).format("dddd")}>
+    <TempDisplay text={moment.unix(day.time).format("dddd")}>
       <span>{Math.round(day.temperatureHigh)}</span>
       <span className="Weather-LowTemp">{Math.round(day.temperatureLow)}</span>
     </TempDisplay>,

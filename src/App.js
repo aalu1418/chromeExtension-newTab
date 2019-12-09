@@ -61,6 +61,7 @@ const App = () => {
 
 export default App;
 
+//component for clock & date
 const Clock = () => {
   const [time, setTime] = React.useState([]);
   const [date, setDate] = React.useState("");
@@ -108,6 +109,7 @@ const Clock = () => {
   );
 };
 
+//component for all weather data + inputting location
 const Weather = () => {
   const [location, setLocation] = React.useState(null);
   const [locationData, setLocationData] = React.useState(
@@ -204,6 +206,7 @@ const Weather = () => {
   );
 };
 
+//component for entire weather forecast
 const WeatherDisplay = ({ current, future, alert }) => {
   return (
     <div className="WeatherDisplay">
@@ -215,9 +218,24 @@ const WeatherDisplay = ({ current, future, alert }) => {
   );
 };
 
+//component for single day future weather
 const FutureWeather = ({ day }) => {
+  const [index, setIndex] = React.useState(0);
+
+  const weatherData = [
+    <TempDisplay text={moment(day.time).format("dddd")}>
+      <span>{Math.round(day.temperatureHigh)}</span>
+      <span className="Weather-LowTemp">{Math.round(day.temperatureLow)}</span>
+    </TempDisplay>,
+    <DescriptionText text={day.summary} />,
+    <PrecipChance data={day} />
+  ];
+
   return (
-    <div className="FutureWeather">
+    <div
+      className="FutureWeather"
+      onClick={() => setIndex((index + 1) % weatherData.length)}
+    >
       <div className="Weather-Icon Future">
         <i
           className={`wi ${weatherIconPicker(
@@ -228,39 +246,36 @@ const FutureWeather = ({ day }) => {
           )}`}
         ></i>
       </div>
-      <div>{moment.unix(day.time).format("dddd")}</div>
-      <div className="Weather-Temperature">
-        <span>{Math.round(day.temperatureHigh)}</span>
-        <span className="Weather-LowTemp">
-          {Math.round(day.temperatureLow)}
-        </span>
-      </div>
-      {false && <div className="FutureWeather-Future">{day.summary}</div>}
+      <div style={{ height: "60px" }}>{weatherData[index]}</div>
     </div>
   );
 };
 
+//component for current weather + associated data
 const CurrentWeather = ({ current, alert, day }) => {
-  const [index, setIndex] = React.useState(0)
+  const [index, setIndex] = React.useState(0);
   day = { sunriseTime: 0, sunsetTime: 0, ...day };
 
   const weatherData = [
-    <TempDisplay text="Now" temperature={current.temperature} />,
+    <TempDisplay text="Now">
+      <span>{Math.round(current.temperature || null)}</span>
+    </TempDisplay>,
     <DescriptionText text={current.summary} />,
-    <TempDisplay
-      text="Feels like"
-      temperature={current.apparentTemperature}
-      textClass="Weather-Display-SmallText"
-    />,
+    <TempDisplay text="Feels like" textClass="Weather-Display-SmallText">
+      <span>{Math.round(current.apparentTemperature || null)}</span>
+    </TempDisplay>,
     <PrecipChance data={current} />
   ];
 
   if (Object.keys(alert).length !== 0) {
-    weatherData.splice(1,0, <DescriptionText text={alert.title} />)
+    weatherData.splice(1, 0, <DescriptionText text={alert.title} />);
   }
 
   return (
-    <div className="CurrentWeather" onClick={() => setIndex((index+1)%weatherData.length)}>
+    <div
+      className="CurrentWeather"
+      onClick={() => setIndex((index + 1) % weatherData.length)}
+    >
       <div className="Weather-Icon Current">
         <i
           className={`wi ${weatherIconPicker(
@@ -270,7 +285,7 @@ const CurrentWeather = ({ current, alert, day }) => {
             day.sunsetTime
           )}`}
         ></i>
-      {Object.keys(alert).length !== 0 && (
+        {Object.keys(alert).length !== 0 && (
           <FontAwesomeIcon
             className="Weather-Alert Weather"
             icon={faExclamationCircle}
@@ -282,28 +297,27 @@ const CurrentWeather = ({ current, alert, day }) => {
           </div>
         )}
       </div>
-      <div style={{height: "100px"}}>
-        {weatherData[index]}
-      </div>
+      <div style={{ height: "100px" }}>{weatherData[index]}</div>
     </div>
   );
 };
 
-const TempDisplay = ({ text, temperature, textClass }) => {
+//component for temperature data
+const TempDisplay = ({ text, textClass, children }) => {
   return (
     <span className="Weather-TempDisplay">
       <div className={textClass}>{text}</div>
-      <div className="Weather-Temperature">
-        <span>{Math.round(temperature || null)}</span>
-      </div>
+      <div className="Weather-Temperature">{children}</div>
     </span>
   );
 };
 
+//component for text
 const DescriptionText = ({ text }) => {
   return <div className="Weather-Display-SmallText">{text}</div>;
 };
 
+//component for precipitation chance data
 const PrecipChance = ({ data }) => {
   const icon = data.precipType
     ? weatherIconPicker(data.precipType, null, "", "")

@@ -63,6 +63,7 @@
   border-radius: 10px;
   padding: 5px 0px;
   font-size: 22px;
+  cursor: pointer;
 }
 
 .Weather-Icon {
@@ -111,7 +112,7 @@
 }
 
 .Weather-Temperature {
-  width: 65%;
+  width: 100%;
   margin: 5px;
   display: flex;
   flex-direction: row;

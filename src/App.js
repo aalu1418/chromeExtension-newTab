@@ -1,5 +1,11 @@
 import React from "react";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faExclamationCircle,
+  faSubway
+} from "@fortawesome/free-solid-svg-icons";
+import LoadingAnimation from "./LoadingAnimation";
 import "./App.css";
 import "../node_modules/weather-icons/css/weather-icons.css";
 
@@ -155,7 +161,9 @@ const Weather = () => {
         .then(data => {
           setCurrentWeather(data.currently);
           setFutureWeather(data.daily.data.slice(0, 6));
-          setAlertWeather(data.alerts);
+          if (data.alerts) {
+            setAlertWeather(data.alerts[0]);
+          }
         });
     };
 
@@ -177,17 +185,19 @@ const Weather = () => {
       {!locationData && <input type="text" onKeyDown={enterPress} />}
       {locationData && (
         <span>
-          {locationData && (
-            <div className="Weather-Location">
-              {locationData.city || locationData.town || locationData.village},{" "}
-              {locationData.state}
-            </div>
+          <div className="Weather-Location">
+            {locationData.city || locationData.town || locationData.village},{" "}
+            {locationData.state}
+          </div>
+          {futureWeather.length !== 0 ? (
+            <WeatherDisplay
+              current={currentWeather}
+              future={futureWeather}
+              alert={alertWeather}
+            />
+          ) : (
+            <LoadingAnimation />
           )}
-          <WeatherDisplay
-            current={currentWeather}
-            future={futureWeather}
-            alert={alertWeather}
-          />
         </span>
       )}
     </div>
@@ -231,9 +241,26 @@ const FutureWeather = ({ day }) => {
 };
 
 const CurrentWeather = ({ current, alert, day }) => {
+  const [index, setIndex] = React.useState(0)
   day = { sunriseTime: 0, sunsetTime: 0, ...day };
+
+  const weatherData = [
+    <TempDisplay text="Now" temperature={current.temperature} />,
+    <DescriptionText text={current.summary} />,
+    <TempDisplay
+      text="Feels like"
+      temperature={current.apparentTemperature}
+      textClass="Weather-Display-SmallText"
+    />,
+    <PrecipChance data={current} />
+  ];
+
+  if (Object.keys(alert).length !== 0) {
+    weatherData.splice(1,0, <DescriptionText text={alert.title} />)
+  }
+
   return (
-    <div className="CurrentWeather">
+    <div className="CurrentWeather" onClick={() => setIndex((index+1)%weatherData.length)}>
       <div className="Weather-Icon Current">
         <i
           className={`wi ${weatherIconPicker(
@@ -241,16 +268,57 @@ const CurrentWeather = ({ current, alert, day }) => {
             current.time,
             day.sunriseTime,
             day.sunsetTime
-          )} Weather-AlertBase`}
+          )}`}
         ></i>
-      <i className="wi wi-alien Weather-Alert"></i>
+      {Object.keys(alert).length !== 0 && (
+          <FontAwesomeIcon
+            className="Weather-Alert Weather"
+            icon={faExclamationCircle}
+          ></FontAwesomeIcon>
+        )}
+        {false && (
+          <div className="Weather-Alert Transit">
+            <FontAwesomeIcon icon={faSubway} />
+          </div>
+        )}
       </div>
-      <div>Now</div>
-      <div className="Weather-Temperature">
-        <span>{Math.round(current.temperature || null)}</span>
+      <div style={{height: "100px"}}>
+        {weatherData[index]}
       </div>
-      {false && alert && <div>{alert[0].title}</div>}
-      {false && current.summary}
     </div>
+  );
+};
+
+const TempDisplay = ({ text, temperature, textClass }) => {
+  return (
+    <span className="Weather-TempDisplay">
+      <div className={textClass}>{text}</div>
+      <div className="Weather-Temperature">
+        <span>{Math.round(temperature || null)}</span>
+      </div>
+    </span>
+  );
+};
+
+const DescriptionText = ({ text }) => {
+  return <div className="Weather-Display-SmallText">{text}</div>;
+};
+
+const PrecipChance = ({ data }) => {
+  const icon = data.precipType
+    ? weatherIconPicker(data.precipType, null, "", "")
+    : "wi-cloud";
+  return (
+    <span className="Weather-TempDisplay">
+      <i className={`wi ${icon}`} />
+      {icon !== "wi-cloud" && (
+        <div className="Weather-Display-SmallText">
+          {data.precipProbability * 100 + "% of " + data.precipType}
+        </div>
+      )}
+      {icon === "wi-cloud" && (
+        <div className="Weather-Display-SmallText">{"0% of precipation"}</div>
+      )}
+    </span>
   );
 };

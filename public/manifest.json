@@ -1,8 +1,8 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "New Tab",
+  "name": "New Tab Weather",
   "version": "1.0",
-  "description": "This Chrome extension greets the user each time they open a new tab",
+  "description": "New tab extension that shows a timer and weather - built using React and powered by Dark Sky",
 
   "manifest_version": 2,
   "incognito": "split",

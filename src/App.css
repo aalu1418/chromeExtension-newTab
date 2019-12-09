@@ -10,13 +10,14 @@
   min-height: 100vh;
   background-color: black;
   color: white;
+  font-size: 18pt;
 }
 
 .Clock {
 }
 
 .Clock-Time {
-  font-size: 20vh;
+  font-size: 25vh;
   display: flex;
   flex-direction: row;
 }
@@ -28,7 +29,7 @@
 }
 
 .Clock-Digit{
-  width: 110px;
+  width: 120px;
 }
 
 .Clock-Date {
@@ -61,7 +62,7 @@
   margin: 2rem 0.25rem;
   border-radius: 10px;
   padding: 5px 0px;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .Weather-Icon {
@@ -70,38 +71,67 @@
 }
 
 .Weather-Icon.Future {
-  font-size: 50px;
+  font-size: 60px;
 }
 
 .Weather-Icon.Current {
-  font-size: 75px;
+  font-size: 80px;
   position: relative;
-}
-
-.Weather-AlertBase {
-  /* position: absolute; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Weather-Alert {
   position: absolute;
+  z-index: 1;
+  background-color: black;
+  border-radius: 50%;
+  padding: 2px;
+  color: #b71c1c;
+}
+
+.Weather-Alert.Weather {
+  font-size: 25pt;
   left: -5px;
   top: -15px;
-  z-index: 1;
-  font-size: 20pt;
-  background-color: red;
-  border-radius: 50%;
+}
+
+.Weather-Alert.Transit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16pt;
+  border: 2pt solid #b71c1c;
+  padding: 3.5px;
+  left: 90px;
+  top: -15px;
+  min-width: 20px;
+  min-height: 20px;
 }
 
 .Weather-Temperature {
+  width: 65%;
   margin: 5px;
   display: flex;
-  width: 65%;
   flex-direction: row;
   justify-content: space-around;
 }
 
 .Weather-LowTemp {
   opacity: 0.5;
+}
+
+.Weather-TempDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Weather-Display-SmallText {
+  margin: 10px 0px;
+  font-size: 14pt;
 }
 
 .CurrentWeather {
@@ -111,8 +141,9 @@
   justify-content: center;
   width: 165px;
   /* border: 1pt solid white; */
-  font-size: 30px;
+  font-size: 36px;
   margin: 2rem 0rem;
   border-radius: 10px;
   padding: 5px 0px;
+  cursor: pointer;
 }

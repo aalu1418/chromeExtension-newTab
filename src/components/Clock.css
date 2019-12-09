@@ -2,7 +2,7 @@
 }
 
 .Clock-Time {
-  font-size: 25vh;
+  font-size: 15rem;
   display: flex;
   flex-direction: row;
 }
@@ -14,7 +14,7 @@
 }
 
 .Clock-Digit{
-  width: 120px;
+  width: 8rem;
 }
 
 .Clock-Date {

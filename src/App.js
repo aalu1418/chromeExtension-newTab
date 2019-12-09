@@ -20,7 +20,7 @@ const weatherIcons = {
   fog: "wi-fog",
   cloudy: "wi-cloudy",
   "partly-cloudy-day": "wi-day-sunny-overcast",
-  "partly-cloudy-night": "wi-night-alt-partly-cloudy",
+  "partly-cloudy-night": "wi-night-alt-cloudy",
   hail: "wi-hail",
   thunderstorm: "wi-thunderstorm",
   tornado: "wi-tornado"
@@ -118,6 +118,7 @@ const Weather = () => {
   const [currentWeather, setCurrentWeather] = React.useState({});
   const [futureWeather, setFutureWeather] = React.useState([]);
   const [alertWeather, setAlertWeather] = React.useState({});
+  const [activeInput, setActiveInput] = React.useState(!locationData);
 
   //get latitude & longitude on location change
   React.useEffect(() => {
@@ -178,19 +179,36 @@ const Weather = () => {
 
   const enterPress = event => {
     if (event.key === "Enter") {
-      setLocation(event.target.value);
+      if (event.target.value.trim() !== "") {
+        setLocation(event.target.value);
+        setFutureWeather([]);
+        setCurrentWeather({});
+        setAlertWeather({});
+      }
+      setActiveInput(false)
     }
   };
 
   return (
     <div className="Weather">
-      {!locationData && <input type="text" onKeyDown={enterPress} />}
+      {activeInput && (
+        <input
+          autoFocus
+          className="Weather-Input"
+          type="text"
+          onKeyDown={enterPress}
+          placeholder="Location"
+          onBlur={() => setActiveInput(false)}
+        />
+      )}
+      {!activeInput && locationData && (
+        <div className="Weather-Location" onClick={() => setActiveInput(true)}>
+          {locationData.city || locationData.town || locationData.village},{" "}
+          {locationData.state}
+        </div>
+      )}
       {locationData && (
         <span>
-          <div className="Weather-Location">
-            {locationData.city || locationData.town || locationData.village},{" "}
-            {locationData.state}
-          </div>
           {futureWeather.length !== 0 ? (
             <WeatherDisplay
               current={currentWeather}

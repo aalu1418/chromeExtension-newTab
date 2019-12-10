@@ -5,6 +5,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import "./IconsAndButtons.css";
 import darkSky from "../images/darkskylogo.png";
 import locationIQ from "../images/locationiq-logo.png";
+import catGif from "../images/pusheen.gif"
 
 const IconsAndButtons = () => {
   const [openSettings, setOpenSettings] = React.useState(false);
@@ -19,6 +20,7 @@ const IconsAndButtons = () => {
         onClick={() => setOpenSettings(!openSettings)}
       />
       <Logos state={openSettings} />
+      <CatGif state={openSettings} />
     </div>
   );
 };
@@ -27,7 +29,7 @@ export default IconsAndButtons;
 
 const Settings = ({ onClick }) => {
   return (
-    <div className="Settings" >
+    <div className="Settings">
       <FontAwesomeIcon
         className="Settings-Icon"
         icon={faCog}
@@ -53,3 +55,12 @@ const Logos = ({ state }) => {
     </div>
   );
 };
+
+const CatGif = ({state}) => {
+  const style = state ? { visibility: "visible" } : { visibility: "hidden" };
+  return (
+    <div className="CatGif" style={style}>
+      <img src={catGif} alt="cat-gif"/>
+    </div>
+  )
+}

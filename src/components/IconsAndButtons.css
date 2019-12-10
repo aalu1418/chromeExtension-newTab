@@ -1,15 +1,22 @@
 .IconsAndButtons {
-  margin: 2rem;
-  padding-right: 1rem;
+  margin: 1rem;
+  padding-left: 1rem;
   z-index: 3;
   position: fixed;
-  top: 0;
-  left: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-direction: row-reverse;
+  align-items: center;
   /* border: 1pt solid white; */
   border-radius: 2rem;
+  height: 13rem;
+}
+
+.Settings {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
 }
 
 .Settings-Icon {
@@ -31,4 +38,19 @@
   filter: grayscale(100%);
   color: white;
   font-size: 30pt;
+}
+
+.CatGif {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.CatGif > img {
+  border-radius: 20px;
+  height: 6rem;
+
 }

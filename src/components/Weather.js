@@ -131,7 +131,7 @@ const Weather = () => {
 
   return (
     <div className="Weather">
-      {activeInput && (
+      {(activeInput || !locationData) && (
         <input
           autoFocus
           className="Weather-Input"

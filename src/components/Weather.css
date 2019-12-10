@@ -16,6 +16,10 @@
   font-family: Quicksand;
 }
 
+input.Weather-Input:focus {
+  outline: none;
+}
+
 .WeatherDisplay {
   display: flex;
   max-width: 1000px;

@@ -9,6 +9,6 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "content_security_policy": "script-src 'self' 'sha256-N1sEUrl1gfSEI9IlnlAqyv0WExd45knW4yx8b6SAB54='; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'sha256-gQhwn1LaqXHh5Jp8petNxYr3321MLnXHn8C0iRxt/c8='; object-src 'self'",
   "permissions": ["activeTab"]
 }

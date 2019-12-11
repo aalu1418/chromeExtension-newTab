@@ -171,7 +171,7 @@ const WeatherDisplay = ({ current, future, alert }) => {
       {current && (
         <CurrentWeather current={current} alert={alert} day={future[0]} />
       )}
-      {future && future.map(day => <FutureWeather key={day.time} day={day} />)}
+      {future && future.map(day => <FutureWeather key={moment.unix(day.time).format("dddd")} day={day} />)}
     </div>
   );
 };
@@ -193,6 +193,7 @@ const FutureWeather = ({ day }) => {
     <div
       className="FutureWeather"
       onClick={() => setIndex((index + 1) % weatherData.length)}
+      onMouseLeave={() => setIndex(0)}
     >
       <div className="Weather-Icon Future">
         <i
@@ -233,6 +234,7 @@ const CurrentWeather = ({ current, alert, day }) => {
     <div
       className="CurrentWeather"
       onClick={() => setIndex((index + 1) % weatherData.length)}
+      onMouseLeave={() => setIndex(0)}
     >
       <div className="Weather-Icon Current">
         <i

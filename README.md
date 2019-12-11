@@ -21,8 +21,15 @@ Added features:
 - More detailed weather icon usage (icons change depending on current time and/or precipitation time)
 
 Future features:
+- Wind speed & direction
+- Humidity
+- Better handling of location strings for city/state/etc
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
 - Custom colors
+- Toggle units
+
+Bugs:
+- the last future weather does not respond like the other forecast elements
 
 ---
 ### Installation Instructions:

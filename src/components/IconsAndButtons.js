@@ -14,7 +14,7 @@ const IconsAndButtons = () => {
     : {};
 
   return (
-    <div className="IconsAndButtons" style={style}>
+    <div className="IconsAndButtons" style={style} onMouseLeave={() => setOpenSettings(false)}>
       <Settings
         state={openSettings}
         onClick={() => setOpenSettings(!openSettings)}

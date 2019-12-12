@@ -17,19 +17,21 @@ Originally inspired by [Currently Chrome Extension](https://chrome.google.com/we
 
 Added features:
 - More detailed weather information (click on the forecast for ```Now``` or each day)
+  - Weather alerts (if present)
+  - Summary
+  - Feels like temperature (on ```Now``` only)
+  - Precipitation probability
+  - Wind data
 - Set location (click on location to change)
 - More detailed weather icon usage (icons change depending on current time and/or precipitation time)
 
 Future features:
-- Wind speed & direction
 - Humidity
+- Phase of moon
 - Better handling of location strings for city/state/etc
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
 - Custom colors
 - Toggle units
-
-Bugs:
-- the last future weather does not respond like the other forecast elements
 
 ---
 ### Installation Instructions:

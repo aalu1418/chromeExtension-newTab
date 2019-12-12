@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,7 +6,7 @@ import {
   faSubway
 } from "@fortawesome/free-solid-svg-icons";
 import LoadingAnimation from "./LoadingAnimation";
-import "./Weather.css"
+import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
 
 //weather icons
@@ -23,7 +23,8 @@ const weatherIcons = {
   "partly-cloudy-night": "wi-night-alt-cloudy",
   hail: "wi-hail",
   thunderstorm: "wi-thunderstorm",
-  tornado: "wi-tornado"
+  tornado: "wi-tornado",
+  windDirection: "wi-wind-default"
 };
 
 //algorithm to pick icons based on time & precipitation time
@@ -106,7 +107,8 @@ const Weather = () => {
           if (data.alerts) {
             setAlertWeather(data.alerts[0]);
           }
-          document.title = Math.round(data.currently.temperature) +"\xB0 | New Tab"
+          document.title =
+            Math.round(data.currently.temperature) + "\xB0 | New Tab";
         });
     };
 
@@ -125,7 +127,7 @@ const Weather = () => {
         setCurrentWeather({});
         setAlertWeather({});
       }
-      setActiveInput(false)
+      setActiveInput(false);
     }
   };
 
@@ -171,7 +173,10 @@ const WeatherDisplay = ({ current, future, alert }) => {
       {current && (
         <CurrentWeather current={current} alert={alert} day={future[0]} />
       )}
-      {future && future.map(day => <FutureWeather key={moment.unix(day.time).format("dddd")} day={day} />)}
+      {future &&
+        future.map(day => (
+          <FutureWeather key={moment.unix(day.time).format("dddd")} day={day} />
+        ))}
     </div>
   );
 };
@@ -186,16 +191,17 @@ const FutureWeather = ({ day }) => {
       <span className="Weather-LowTemp">{Math.round(day.temperatureLow)}</span>
     </TempDisplay>,
     <DescriptionText text={day.summary} />,
-    <PrecipChance data={day} />
+    <PrecipChance data={day} />,
+    <WindData data={day} />
   ];
 
   return (
-    <div
-      className="FutureWeather"
-      onClick={() => setIndex((index + 1) % weatherData.length)}
-      onMouseLeave={() => setIndex(0)}
-    >
-      <div className="Weather-Icon Future">
+    <div className="FutureWeather">
+      <div
+        className="Weather-Icon Future"
+        onMouseLeave={() => setIndex(0)}
+        onClick={() => setIndex((index + 1) % weatherData.length)}
+      >
         <i
           className={`wi ${weatherIconPicker(
             day.icon,
@@ -223,7 +229,8 @@ const CurrentWeather = ({ current, alert, day }) => {
     <TempDisplay text="Feels like" textClass="Weather-Display-SmallText">
       <span>{Math.round(current.apparentTemperature || null)}</span>
     </TempDisplay>,
-    <PrecipChance data={current} />
+    <PrecipChance data={current} />,
+    <WindData data={current} />
   ];
 
   if (Object.keys(alert).length !== 0) {
@@ -231,12 +238,12 @@ const CurrentWeather = ({ current, alert, day }) => {
   }
 
   return (
-    <div
-      className="CurrentWeather"
-      onClick={() => setIndex((index + 1) % weatherData.length)}
-      onMouseLeave={() => setIndex(0)}
-    >
-      <div className="Weather-Icon Current">
+    <div className="CurrentWeather">
+      <div
+        className="Weather-Icon Current"
+        onClick={() => setIndex((index + 1) % weatherData.length)}
+        onMouseLeave={() => setIndex(0)}
+      >
         <i
           className={`wi ${weatherIconPicker(
             current.icon,
@@ -287,11 +294,36 @@ const PrecipChance = ({ data }) => {
       <i className={`wi ${icon}`} />
       {icon !== "wi-cloud" && (
         <div className="Weather-Display-SmallText">
-          {data.precipProbability * 100 + "% of " + data.precipType}
+          {Math.round(data.precipProbability * 100) + "% of " + data.precipType}
         </div>
       )}
       {icon === "wi-cloud" && (
         <div className="Weather-Display-SmallText">{"0% of precipation"}</div>
+      )}
+    </span>
+  );
+};
+
+const WindData = ({ data }) => {
+  const icon = weatherIcons["windDirection"];
+  const rotationAngle =
+    data.windSpeed !== 0 ? (data.windBearing + 180) % 360 : 0;
+
+  return (
+    <span className="Weather-TempDisplay">
+      <i
+        className={`wi ${icon}`}
+        style={{ transform: `rotate(${rotationAngle}deg)` }}
+      />
+      {data.windBearing && (
+        <span>
+          <div className="Weather-Display-SmallText">{`${Math.round(
+            data.windSpeed
+          )} m/s`}</div>
+          <div className="Weather-Display-SmallText">{`${Math.round(
+            data.windGust
+          )} m/s (gusts)`}</div>
+        </span>
       )}
     </span>
   );

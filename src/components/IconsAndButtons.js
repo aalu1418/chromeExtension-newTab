@@ -17,7 +17,7 @@ const IconsAndButtons = () => {
     <div
       className="IconsAndButtons"
       style={style}
-      tabindex="0"
+      tabIndex="0"
       onBlur={() => setOpenSettings(false)}
     >
       <Settings

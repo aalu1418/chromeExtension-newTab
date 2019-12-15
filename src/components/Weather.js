@@ -53,7 +53,7 @@ const weatherIconPicker = (icon, time, sunrise, sunset) => {
 const Weather = () => {
   const [location, setLocation] = React.useState(null);
   const [locationData, setLocationData] = React.useState(
-    JSON.parse(localStorage.getItem("locationData"))
+    JSON.parse(localStorage.getItem("locationData")) || {}
   );
   const [currentWeather, setCurrentWeather] = React.useState({});
   const [futureWeather, setFutureWeather] = React.useState([]);
@@ -132,14 +132,18 @@ const Weather = () => {
   };
 
   //location display logic
-  const neigherborhood = locationData.neighbourhood;
-  const city =
-    locationData.city ||
-    locationData.town ||
-    locationData.village ||
-    locationData.state_district;
-  const state =
-    city === locationData.state ? locationData.country : locationData.state;
+  const neighbourhood = Object.keys(locationData).length !== 0 ? locationData.neighbourhood : null;
+  const city = Object.keys(locationData).length !== 0
+    ? locationData.city ||
+      locationData.town ||
+      locationData.village ||
+      locationData.state_district
+    : null;
+  const state = Object.keys(locationData).length !== 0
+    ? city === locationData.state
+      ? locationData.country
+      : locationData.state
+    : null;
 
   return (
     <div className="Weather">
@@ -155,8 +159,10 @@ const Weather = () => {
       )}
       {!activeInput && locationData && (
         <div className="Weather-Location" onClick={() => setActiveInput(true)}>
-          {neigherborhood && `${neigherborhood}, `}
-          {`${city}, ${state}`}
+          {neighbourhood && `${neighbourhood}, `}
+          {city && `${city}, `}
+          {state && `${state}`}
+          {!neighbourhood && !city && !state && "Location Error"}
         </div>
       )}
       {locationData && (
@@ -243,7 +249,9 @@ const CurrentWeather = ({ current, alert, day }) => {
     </TempDisplay>,
     <PrecipChance data={current} />,
     <WindData data={current} />,
-    <DescriptionText text={`Humidity: ${Math.round(current.humidity * 100)}%`} />
+    <DescriptionText
+      text={`Humidity: ${Math.round(current.humidity * 100)}%`}
+    />
   ];
 
   if (Object.keys(alert).length !== 0) {
@@ -351,48 +359,52 @@ const MoonData = ({ data }) => {
   if (specialPhaseCheck) {
     switch (data.moonPhase) {
       case 0:
-        icon.push("New")
+        icon.push("New");
         break;
       case 0.25:
-        icon.push(..."First-Quarter".split("-"))
+        icon.push(..."First-Quarter".split("-"));
         break;
       case 0.5:
-        icon.push("Full")
+        icon.push("Full");
         break;
       case 0.75:
-        icon.push(..."3rd-Quarter".split("-"))
+        icon.push(..."3rd-Quarter".split("-"));
         break;
       default:
     }
   } else {
     if (data.moonPhase < 0.5) {
-      icon.push("Waxing")
+      icon.push("Waxing");
     } else {
-      icon.push("Waning")
+      icon.push("Waning");
     }
 
     if (data.moonPhase > 0.25 && data.moonPhase < 0.75) {
-      icon.push("Gibbous")
-    } else if (data.moonPhase < 0.25) { //handles a spelling error in package
-      icon.push("Cresent")
+      icon.push("Gibbous");
+    } else if (data.moonPhase < 0.25) {
+      //handles a spelling error in package
+      icon.push("Cresent");
     } else {
-      icon.push("Crescent")
+      icon.push("Crescent");
     }
 
-    icon.push(Math.ceil((data.moonPhase % 0.25)/0.04))
+    icon.push(Math.ceil((data.moonPhase % 0.25) / 0.04));
   }
 
   //handles spelling error in package
-  let iconString = icon
+  let iconString = icon;
   if (iconString.includes("Cresent")) {
-    iconString[1] = "Crescent"
+    iconString[1] = "Crescent";
   }
 
-  const description = iconString.length === 1 ? `${iconString[0]} Moon` : iconString.slice(0,2).join(" ")
+  const description =
+    iconString.length === 1
+      ? `${iconString[0]} Moon`
+      : iconString.slice(0, 2).join(" ");
 
   return (
     <span className="Weather-TempDisplay">
-      <i className={`wi wi-moon-${icon.join('-').toLowerCase()}`} />
+      <i className={`wi wi-moon-${icon.join("-").toLowerCase()}`} />
       {data.windBearing && (
         <span>
           <div className="Weather-Display-SmallText">{description}</div>

@@ -40,10 +40,10 @@ input.Weather-Input:focus {
   border-radius: 10px;
   padding: 5px 0px;
   font-size: 22px;
+  cursor: pointer;
 }
 
 .Weather-Icon {
-  cursor: pointer;
   text-align: center;
   margin: 15px 0px;
 }
@@ -131,4 +131,5 @@ input.Weather-Input:focus {
   margin: 2rem 0rem;
   border-radius: 10px;
   padding: 5px 0px;
+  cursor: pointer;
 }

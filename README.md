@@ -15,6 +15,7 @@ Icons: [Weather Icons](https://www.npmjs.com/package/weather-icons) & [Font Awes
 ### Functionality:
 Originally inspired by [Currently Chrome Extension](https://chrome.google.com/webstore/detail/currently/ojhmphdkpgbibohbnpbfiefkgieacjmh?hl=en)
 
+
 Added features:
 - More detailed weather information (click on the forecast for ```Now``` or each day)
   - Weather alerts (if present)
@@ -22,14 +23,14 @@ Added features:
   - Feels like temperature (on ```Now``` only)
   - Precipitation probability
   - Wind data
+  - Phases of the moon
+  - Humidity
 - Set location (click on location to change)
 - More detailed weather icon usage (icons change depending on current time and/or precipitation time)
 
 Future features:
-- Humidity
-- Phase of moon
-- Better handling of location strings for city/state/etc
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
+- Better toggle for buttons (turn into X & click out instead of onMouseLeave)
 - Custom colors
 - Toggle units
 

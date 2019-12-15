@@ -5,22 +5,26 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import "./IconsAndButtons.css";
 import darkSky from "../images/darkskylogo.png";
 import locationIQ from "../images/locationiq-logo.png";
-import catGif from "../images/pusheen.gif"
+import catGif from "../images/pusheen.gif";
 
 const IconsAndButtons = () => {
   const [openSettings, setOpenSettings] = React.useState(false);
   const style = openSettings
-    ? { border: "2px solid", backgroundColor: "inherit" }
+    ? { border: "2px solid", backgroundColor: "inherit", height: "13rem" }
     : {};
 
   return (
-    <div className="IconsAndButtons" style={style} onMouseLeave={() => setOpenSettings(false)}>
+    <div
+      className="IconsAndButtons"
+      style={style}
+      onMouseLeave={() => setOpenSettings(false)}
+    >
       <Settings
         state={openSettings}
         onClick={() => setOpenSettings(!openSettings)}
       />
-      <Logos state={openSettings} />
-      <CatGif state={openSettings} />
+      {openSettings && <Logos state={openSettings} />}
+      {openSettings && <CatGif state={openSettings} />}
     </div>
   );
 };
@@ -39,10 +43,9 @@ const Settings = ({ onClick }) => {
   );
 };
 
-const Logos = ({ state }) => {
-  const style = state ? { visibility: "visible" } : { visibility: "hidden" };
+const Logos = () => {
   return (
-    <div className="Logos" style={style}>
+    <div className="Logos">
       <a href="https://github.com/aalu1418/chromeExtension-newTab">
         <FontAwesomeIcon className="Logos-Icon" icon={faGithub} />
       </a>
@@ -56,11 +59,10 @@ const Logos = ({ state }) => {
   );
 };
 
-const CatGif = ({state}) => {
-  const style = state ? { visibility: "visible" } : { visibility: "hidden" };
+const CatGif = () => {
   return (
-    <div className="CatGif" style={style}>
-      <img src={catGif} alt="cat-gif"/>
+    <div className="CatGif">
+      <img src={catGif} alt="cat-gif" />
     </div>
-  )
-}
+  );
+};

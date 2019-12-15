@@ -131,6 +131,16 @@ const Weather = () => {
     }
   };
 
+  //location display logic
+  const neigherborhood = locationData.neighbourhood;
+  const city =
+    locationData.city ||
+    locationData.town ||
+    locationData.village ||
+    locationData.state_district;
+  const state =
+    city === locationData.state ? locationData.country : locationData.state;
+
   return (
     <div className="Weather">
       {(activeInput || !locationData) && (
@@ -145,8 +155,8 @@ const Weather = () => {
       )}
       {!activeInput && locationData && (
         <div className="Weather-Location" onClick={() => setActiveInput(true)}>
-          {locationData.city || locationData.town || locationData.village},{" "}
-          {locationData.state}
+          {neigherborhood && `${neigherborhood}, `}
+          {`${city}, ${state}`}
         </div>
       )}
       {locationData && (
@@ -192,16 +202,18 @@ const FutureWeather = ({ day }) => {
     </TempDisplay>,
     <DescriptionText text={day.summary} />,
     <PrecipChance data={day} />,
-    <WindData data={day} />
+    <WindData data={day} />,
+    <MoonData data={day} />,
+    <DescriptionText text={`Humidity: ${Math.round(day.humidity * 100)}%`} />
   ];
 
   return (
-    <div className="FutureWeather">
-      <div
-        className="Weather-Icon Future"
-        onMouseLeave={() => setIndex(0)}
-        onClick={() => setIndex((index + 1) % weatherData.length)}
-      >
+    <div
+      className="FutureWeather"
+      onMouseLeave={() => setIndex(0)}
+      onClick={() => setIndex((index + 1) % weatherData.length)}
+    >
+      <div className="Weather-Icon Future">
         <i
           className={`wi ${weatherIconPicker(
             day.icon,
@@ -230,7 +242,8 @@ const CurrentWeather = ({ current, alert, day }) => {
       <span>{Math.round(current.apparentTemperature || null)}</span>
     </TempDisplay>,
     <PrecipChance data={current} />,
-    <WindData data={current} />
+    <WindData data={current} />,
+    <DescriptionText text={`Humidity: ${Math.round(current.humidity * 100)}%`} />
   ];
 
   if (Object.keys(alert).length !== 0) {
@@ -238,12 +251,12 @@ const CurrentWeather = ({ current, alert, day }) => {
   }
 
   return (
-    <div className="CurrentWeather">
-      <div
-        className="Weather-Icon Current"
-        onClick={() => setIndex((index + 1) % weatherData.length)}
-        onMouseLeave={() => setIndex(0)}
-      >
+    <div
+      className="CurrentWeather"
+      onClick={() => setIndex((index + 1) % weatherData.length)}
+      onMouseLeave={() => setIndex(0)}
+    >
+      <div className="Weather-Icon Current">
         <i
           className={`wi ${weatherIconPicker(
             current.icon,
@@ -264,7 +277,9 @@ const CurrentWeather = ({ current, alert, day }) => {
           </div>
         )}
       </div>
-      <div style={{ height: "100px" }}>{weatherData[index]}</div>
+      <div className="Weather-Details" style={{ height: "100px" }}>
+        {weatherData[index]}
+      </div>
     </div>
   );
 };
@@ -323,6 +338,64 @@ const WindData = ({ data }) => {
           <div className="Weather-Display-SmallText">{`${Math.round(
             data.windGust
           )} m/s (gusts)`}</div>
+        </span>
+      )}
+    </span>
+  );
+};
+
+const MoonData = ({ data }) => {
+  const specialPhaseCheck = [0, 0.25, 0.5, 0.75].includes(data.moonPhase);
+  let icon = [];
+
+  if (specialPhaseCheck) {
+    switch (data.moonPhase) {
+      case 0:
+        icon.push("New")
+        break;
+      case 0.25:
+        icon.push(..."First-Quarter".split("-"))
+        break;
+      case 0.5:
+        icon.push("Full")
+        break;
+      case 0.75:
+        icon.push(..."3rd-Quarter".split("-"))
+        break;
+      default:
+    }
+  } else {
+    if (data.moonPhase < 0.5) {
+      icon.push("Waxing")
+    } else {
+      icon.push("Waning")
+    }
+
+    if (data.moonPhase > 0.25 && data.moonPhase < 0.75) {
+      icon.push("Gibbous")
+    } else if (data.moonPhase < 0.25) { //handles a spelling error in package
+      icon.push("Cresent")
+    } else {
+      icon.push("Crescent")
+    }
+
+    icon.push(Math.ceil((data.moonPhase % 0.25)/0.04))
+  }
+
+  //handles spelling error in package
+  let iconString = icon
+  if (iconString.includes("Cresent")) {
+    iconString[1] = "Crescent"
+  }
+
+  const description = iconString.length === 1 ? `${iconString[0]} Moon` : iconString.slice(0,2).join(" ")
+
+  return (
+    <span className="Weather-TempDisplay">
+      <i className={`wi wi-moon-${icon.join('-').toLowerCase()}`} />
+      {data.windBearing && (
+        <span>
+          <div className="Weather-Display-SmallText">{description}</div>
         </span>
       )}
     </span>

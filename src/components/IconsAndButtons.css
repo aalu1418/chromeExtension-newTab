@@ -12,6 +12,10 @@
   border-radius: 2rem;
 }
 
+.IconsAndButtons:focus {
+  outline: none;
+}
+
 .Settings {
   height: 100%;
   display: flex;

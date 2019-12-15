@@ -31,7 +31,7 @@ Added features:
 
 Future features:
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
-- Better toggle for buttons (turn into X & click out instead of onMouseLeave)
+- Rendering animations for transitions
 - Custom colors
 - Toggle units
 

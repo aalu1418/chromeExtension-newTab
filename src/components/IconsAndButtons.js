@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import "./IconsAndButtons.css";
 import darkSky from "../images/darkskylogo.png";
@@ -17,7 +17,8 @@ const IconsAndButtons = () => {
     <div
       className="IconsAndButtons"
       style={style}
-      onMouseLeave={() => setOpenSettings(false)}
+      tabindex="0"
+      onBlur={() => setOpenSettings(false)}
     >
       <Settings
         state={openSettings}
@@ -31,12 +32,12 @@ const IconsAndButtons = () => {
 
 export default IconsAndButtons;
 
-const Settings = ({ onClick }) => {
+const Settings = ({ state, onClick }) => {
   return (
     <div className="Settings">
       <FontAwesomeIcon
         className="Settings-Icon"
-        icon={faCog}
+        icon={state ? faTimes : faCog}
         onClick={onClick}
       />
     </div>

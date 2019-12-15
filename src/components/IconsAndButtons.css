@@ -39,7 +39,7 @@
   width: 10rem;
   margin: 5pt;
   filter: grayscale(100%);
-  color: white;
+  color: inherit;
   font-size: 30pt;
 }
 

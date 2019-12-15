@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import "./IconsAndButtons.css";
-import darkSky from "../images/darkskylogo.png";
+import darkSky from "../images/darkskylogo-white.png";
 import locationIQ from "../images/locationiq-logo.png";
 import catGif from "../images/pusheen.gif";
 

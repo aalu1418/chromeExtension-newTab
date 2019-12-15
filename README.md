@@ -15,6 +15,7 @@ Icons: [Weather Icons](https://www.npmjs.com/package/weather-icons) & [Font Awes
 ### Functionality:
 Originally inspired by [Currently Chrome Extension](https://chrome.google.com/webstore/detail/currently/ojhmphdkpgbibohbnpbfiefkgieacjmh?hl=en)
 
+![](./screenshot.png)
 
 Added features:
 - More detailed weather information (click on the forecast for ```Now``` or each day)

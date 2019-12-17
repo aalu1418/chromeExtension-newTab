@@ -28,13 +28,15 @@ Added features:
   - Humidity
 - Set location (click on location to change)
 - More detailed weather icon usage (icons change depending on current time and/or precipitation time)
+- Custom colors
 
 Future features:
 - icon for extension
+- handle click close for settings
 - handle random string input for location
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
 - Rendering animations for transitions
-- Custom colors
+- Fullscreen clock mode
 - Toggle units
 
 ---

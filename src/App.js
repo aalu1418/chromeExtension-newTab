@@ -16,7 +16,7 @@ const App = () => {
     <div className="App">
       <div className="App-Content" style={{ backgroundColor, color }}>
         <Clock screenState={screenState}/>
-        {!screen && <Weather />}
+        {!screen && <Weather bgColor={backgroundColor}/>}
         {!screen && <IconsAndButtons
           color={backgroundColor}
           setColor={setBackgroundColor}

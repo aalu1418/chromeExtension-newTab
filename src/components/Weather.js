@@ -51,7 +51,7 @@ const weatherIconPicker = (icon, time, sunrise, sunset) => {
 };
 
 //component for all weather data + inputting location
-const Weather = () => {
+const Weather = ({ bgColor}) => {
   const [location, setLocation] = React.useState(null);
   const [locationData, setLocationData] = React.useState(
     readLocalStorage("locationData") || {}
@@ -201,6 +201,7 @@ const Weather = () => {
               current={currentWeather}
               future={futureWeather}
               alert={alertWeather}
+              bgColor={bgColor}
             />
           ) : (
             <LoadingAnimation />
@@ -212,11 +213,16 @@ const Weather = () => {
 };
 
 //component for entire weather forecast
-const WeatherDisplay = ({ current, future, alert }) => {
+const WeatherDisplay = ({ current, future, alert, bgColor }) => {
   return (
     <div className="WeatherDisplay">
       {current && (
-        <CurrentWeather current={current} alert={alert} day={future[0]} />
+        <CurrentWeather
+          current={current}
+          alert={alert}
+          day={future[0]}
+          bgColor={bgColor}
+        />
       )}
       {future &&
         future.map(day => (
@@ -264,7 +270,7 @@ const FutureWeather = ({ day }) => {
 };
 
 //component for current weather + associated data
-const CurrentWeather = ({ current, alert, day }) => {
+const CurrentWeather = ({ current, alert, day, bgColor }) => {
   const [index, setIndex] = React.useState(0);
   day = { sunriseTime: 0, sunsetTime: 0, ...day };
 
@@ -306,6 +312,7 @@ const CurrentWeather = ({ current, alert, day }) => {
           <FontAwesomeIcon
             className="Weather-Alert Weather"
             icon={faExclamationCircle}
+            style={{ backgroundColor: bgColor }}
           ></FontAwesomeIcon>
         )}
         {false && (

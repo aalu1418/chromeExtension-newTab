@@ -67,7 +67,7 @@ input.Weather-Input:focus {
 .Weather-Alert {
   position: absolute;
   z-index: 1;
-  background-color: black;
+  background-color: inherit;
   border-radius: 50%;
   padding: 2px;
   color: #b71c1c;

@@ -33,7 +33,6 @@ Added features:
 
 Future features:
 - include AM/PM in time
-- dynamically adjust opacity on LocationIQ logo
 - icon for extension
 - handle click close for settings
 - handle random string input for location

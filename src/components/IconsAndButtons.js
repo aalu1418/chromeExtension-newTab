@@ -71,10 +71,10 @@ const Logos = ({ fontColor }) => {
       </a>
       <a href="https://locationiq.com/">
         <img
-          className="Logos-Icon"
-          style={{ filter: "grayscale(100%)" }}
+          className="Logos-Icon LocationIQ"
           src={locationIQ}
           alt="locationIQ logo"
+          style={{filter: `saturate(0) contrast(100) invert(${fontColor === 'black' ? "0" : "100"})`}}
         />
       </a>
     </div>

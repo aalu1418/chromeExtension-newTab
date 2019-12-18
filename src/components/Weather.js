@@ -8,6 +8,7 @@ import {
 import LoadingAnimation from "./LoadingAnimation";
 import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
+import { updateLocalStorage, readLocalStorage } from "./updateLocalStorage";
 
 //weather icons
 const weatherIcons = {
@@ -53,11 +54,17 @@ const weatherIconPicker = (icon, time, sunrise, sunset) => {
 const Weather = () => {
   const [location, setLocation] = React.useState(null);
   const [locationData, setLocationData] = React.useState(
-    JSON.parse(localStorage.getItem("locationData")) || {}
+    readLocalStorage("locationData") || {}
   );
-  const [currentWeather, setCurrentWeather] = React.useState({});
-  const [futureWeather, setFutureWeather] = React.useState([]);
-  const [alertWeather, setAlertWeather] = React.useState({});
+  const [currentWeather, setCurrentWeather] = React.useState(
+    readLocalStorage("currentlyData") || {}
+  );
+  const [futureWeather, setFutureWeather] = React.useState(
+    readLocalStorage("dailyData") || []
+  );
+  const [alertWeather, setAlertWeather] = React.useState(
+    readLocalStorage("alertData") || {}
+  );
   const [activeInput, setActiveInput] = React.useState(!locationData);
 
   //get latitude & longitude on location change
@@ -78,7 +85,7 @@ const Weather = () => {
             ...response[0].address
           };
           setLocationData(data);
-          localStorage.setItem("locationData", JSON.stringify(data));
+          updateLocalStorage({ locationData: data });
         });
     }
   }, [location]);
@@ -104,20 +111,39 @@ const Weather = () => {
         .then(data => {
           setCurrentWeather(data.currently);
           setFutureWeather(data.daily.data.slice(0, 6));
+          let storagePayload = {
+            currentlyData: data.currently,
+            dailyData: data.daily.data.slice(0, 6)
+          };
           if (data.alerts) {
             setAlertWeather(data.alerts[0]);
+            storagePayload = { ...storagePayload, alertData: data.alerts[0] };
           }
+          updateLocalStorage(storagePayload);
           document.title =
             Math.round(data.currently.temperature) + "\xB0 | New Tab";
         });
     };
 
-    if (locationData) {
-      getWeather();
+    if (Object.keys(locationData).length !== 0) {
+      //only run getWeather if saved data is too old (only happens on page load)
+      const currentTime = moment()
+        .add(-5, "m")
+        .unix();
+      // console.log(currentWeather.time, currentTime);
+      if (
+        Object.keys(currentWeather).length === 0 ||
+        currentWeather.time <= currentTime
+      ) {
+        getWeather();
+      } else {
+        document.title =
+          Math.round(currentWeather.temperature) + "\xB0 | New Tab";
+      }
       weatherRepeater = setInterval(() => getWeather(), 1000 * 60 * 5);
     }
     return () => clearInterval(weatherRepeater);
-  }, [locationData]);
+  }, [locationData, currentWeather]);
 
   const enterPress = event => {
     if (event.key === "Enter") {
@@ -132,22 +158,25 @@ const Weather = () => {
   };
 
   //location display logic
-  const neighbourhood = Object.keys(locationData).length !== 0 ? locationData.neighbourhood : null;
-  const city = Object.keys(locationData).length !== 0
-    ? locationData.city ||
-      locationData.town ||
-      locationData.village ||
-      locationData.state_district
-    : null;
-  const state = Object.keys(locationData).length !== 0
-    ? city === locationData.state
-      ? locationData.country
-      : locationData.state
-    : null;
+  const neighbourhood =
+    Object.keys(locationData).length !== 0 ? locationData.neighbourhood : null;
+  const city =
+    Object.keys(locationData).length !== 0
+      ? locationData.city ||
+        locationData.town ||
+        locationData.village ||
+        locationData.state_district
+      : null;
+  const state =
+    Object.keys(locationData).length !== 0
+      ? city === locationData.state
+        ? locationData.country
+        : locationData.state
+      : null;
 
   return (
     <div className="Weather">
-      {(activeInput || !locationData) && (
+      {(activeInput || Object.keys(locationData).length === 0) && (
         <input
           autoFocus
           className="Weather-Input"
@@ -157,7 +186,7 @@ const Weather = () => {
           onBlur={() => setActiveInput(false)}
         />
       )}
-      {!activeInput && locationData && (
+      {!activeInput && Object.keys(locationData).length !== 0 && (
         <div className="Weather-Location" onClick={() => setActiveInput(true)}>
           {neighbourhood && `${neighbourhood}, `}
           {city && `${city}, `}
@@ -165,7 +194,7 @@ const Weather = () => {
           {!neighbourhood && !city && !state && "Location Error"}
         </div>
       )}
-      {locationData && (
+      {Object.keys(locationData).length !== 0 && (
         <span>
           {futureWeather.length !== 0 ? (
             <WeatherDisplay

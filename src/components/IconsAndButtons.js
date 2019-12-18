@@ -8,6 +8,7 @@ import darkSkyWhite from "../images/darkskylogo-white.png";
 import darkSkyBlack from "../images/darkskylogo-black.png";
 import locationIQ from "../images/locationiq-logo.png";
 import catGif from "../images/pusheen.gif";
+import { updateLocalStorage } from "./updateLocalStorage";
 
 const IconsAndButtons = ({ color, setColor, fontColor }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
@@ -27,7 +28,7 @@ const IconsAndButtons = ({ color, setColor, fontColor }) => {
           triangle="hide"
           color={color}
           onChange={(color, event) => {
-            localStorage.setItem("color", color.hex);
+            updateLocalStorage({ color: color.hex });
             setColor(color.hex);
           }}
         />

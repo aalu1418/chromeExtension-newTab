@@ -53,6 +53,7 @@ const weatherIconPicker = (icon, time, sunrise, sunset) => {
 //component for all weather data + inputting location
 const Weather = ({ bgColor}) => {
   const [location, setLocation] = React.useState(null);
+  const [newLocation, setNewLocation] = React.useState(false);
   const [locationData, setLocationData] = React.useState(
     readLocalStorage("locationData") || {}
   );
@@ -79,14 +80,21 @@ const Weather = ({ bgColor}) => {
       )
         .then(data => data.json())
         .then(response => {
-          const data = {
-            lat: response[0].lat,
-            lon: response[0].lon,
-            ...response[0].address
-          };
-          setLocationData(data);
-          updateLocalStorage({ locationData: data });
-        });
+          if (!response.error) {
+            const data = {
+              lat: response[0].lat,
+              lon: response[0].lon,
+              ...response[0].address
+            };
+              setLocationData(data);
+              setNewLocation(true)
+              updateLocalStorage({ locationData: data });
+
+          } else {
+            console.log("LocationIQ error: "+response.error);
+            setLocationData({});
+          }
+        })
     }
   }, [location]);
 
@@ -113,11 +121,14 @@ const Weather = ({ bgColor}) => {
           setFutureWeather(data.daily.data.slice(0, 6));
           let storagePayload = {
             currentlyData: data.currently,
-            dailyData: data.daily.data.slice(0, 6)
+            dailyData: data.daily.data.slice(0, 6),
+            alertData: {}
           };
           if (data.alerts) {
             setAlertWeather(data.alerts[0]);
             storagePayload = { ...storagePayload, alertData: data.alerts[0] };
+          } else {
+            setAlertWeather({});
           }
           updateLocalStorage(storagePayload);
           document.title =
@@ -133,9 +144,10 @@ const Weather = ({ bgColor}) => {
       // console.log(currentWeather.time, currentTime);
       if (
         Object.keys(currentWeather).length === 0 ||
-        currentWeather.time <= currentTime
+        currentWeather.time <= currentTime || newLocation
       ) {
         getWeather();
+        setNewLocation(false);
       } else {
         document.title =
           Math.round(currentWeather.temperature) + "\xB0 | New Tab";
@@ -143,15 +155,14 @@ const Weather = ({ bgColor}) => {
       weatherRepeater = setInterval(() => getWeather(), 1000 * 60 * 5);
     }
     return () => clearInterval(weatherRepeater);
-  }, [locationData, currentWeather]);
+  }, [newLocation, locationData, currentWeather]);
 
   const enterPress = event => {
     if (event.key === "Enter") {
       if (event.target.value.trim() !== "") {
         setLocation(event.target.value);
-        setFutureWeather([]);
-        setCurrentWeather({});
-        setAlertWeather({});
+        setCurrentWeather({})
+        setFutureWeather([])
       }
       setActiveInput(false);
     }
@@ -171,7 +182,7 @@ const Weather = ({ bgColor}) => {
     Object.keys(locationData).length !== 0
       ? city === locationData.state
         ? locationData.country
-        : locationData.state
+        : locationData.state || locationData.country
       : null;
 
   return (

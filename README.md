@@ -33,7 +33,6 @@ Added features:
 
 Future features:
 - icon for extension
-- handle click close for settings
 - handle random string input for location
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
 - Rendering animations for transitions

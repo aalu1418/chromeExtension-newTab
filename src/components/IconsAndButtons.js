@@ -12,28 +12,34 @@ import { updateLocalStorage } from "./updateLocalStorage";
 
 const IconsAndButtons = ({ color, setColor, fontColor }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
-  const style = openSettings
-    ? { border: "2px solid", backgroundColor: "inherit", height: "13rem" }
+  const menuStyle = openSettings
+    ? { border: "2px solid", backgroundColor: color, height: "13rem" }
     : {};
 
   return (
-    <div className="IconsAndButtons" style={style} tabIndex="0">
-      <Settings
-        state={openSettings}
-        onClick={() => setOpenSettings(!openSettings)}
-      />
-      {openSettings && <Logos state={openSettings} fontColor={fontColor} />}
-      {openSettings && (
-        <TwitterPicker
-          triangle="hide"
-          color={color}
-          onChange={(color, event) => {
-            updateLocalStorage({ color: color.hex });
-            setColor(color.hex);
-          }}
+    <div id="Frame" className={openSettings ? "Frame" : ""} onClick={event => {
+        if (event.target.id === "Frame") {
+          setOpenSettings(false)
+        }
+      }}>
+      <div className="IconsAndButtons" style={menuStyle}>
+        <Settings
+          state={openSettings}
+          onClick={() => setOpenSettings(!openSettings)}
         />
-      )}
-      {openSettings && <CatGif state={openSettings} />}
+        {openSettings && <Logos state={openSettings} fontColor={fontColor} />}
+        {openSettings && (
+          <TwitterPicker
+            triangle="hide"
+            color={color}
+            onChange={(color, event) => {
+              updateLocalStorage({ color: color.hex });
+              setColor(color.hex);
+            }}
+          />
+        )}
+        {openSettings && <CatGif state={openSettings} />}
+      </div>
     </div>
   );
 };
@@ -74,7 +80,11 @@ const Logos = ({ fontColor }) => {
           className="Logos-Icon LocationIQ"
           src={locationIQ}
           alt="locationIQ logo"
-          style={{filter: `saturate(0) contrast(100) invert(${fontColor === 'black' ? "0" : "100"})`}}
+          style={{
+            filter: `saturate(0) contrast(100) invert(${
+              fontColor === "black" ? "0" : "100"
+            })`
+          }}
         />
       </a>
     </div>

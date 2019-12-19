@@ -32,7 +32,6 @@ Added features:
 - Fullscreen clock mode
 
 Future features:
-- include AM/PM in time
 - icon for extension
 - handle click close for settings
 - handle random string input for location

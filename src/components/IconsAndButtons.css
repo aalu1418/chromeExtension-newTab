@@ -20,8 +20,8 @@
   border-radius: 2rem;
 }
 
-.IconsAndButtons:focus {
-  outline: none;
+.IconsAndButtons-ColorPicker {
+  margin: 0 1rem;
 }
 
 .Settings {

@@ -9,6 +9,7 @@ import LoadingAnimation from "./LoadingAnimation";
 import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
 import { updateLocalStorage, readLocalStorage } from "./updateLocalStorage";
+import { getBearerToken, getUserTimeline } from "./getTweets";
 
 //weather icons
 const weatherIcons = {
@@ -326,8 +327,8 @@ const CurrentWeather = ({ current, alert, day, bgColor }) => {
             style={{ backgroundColor: bgColor }}
           ></FontAwesomeIcon>
         )}
-        {false && (
-          <div className="Weather-Alert Transit">
+        {true && (
+          <div className="Weather-Alert Transit" onClick={getUserTimeline}>
             <FontAwesomeIcon icon={faSubway} />
           </div>
         )}

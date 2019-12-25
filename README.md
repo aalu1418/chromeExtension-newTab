@@ -37,10 +37,10 @@ Added features:
 
 Future features:
 - icon for extension
-- TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
+- TTC alerts for Toronto location (html scraping)
 - Rendering animations for transitions
 - Toggle units
-- Deployed version (and handling without api keys)
+- better location printing algorithm
 
 ---
 ### Installation Instructions:

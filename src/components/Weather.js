@@ -9,7 +9,7 @@ import LoadingAnimation from "./LoadingAnimation";
 import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
 import { updateLocalStorage, readLocalStorage } from "./updateLocalStorage";
-import { sampleData } from "./sampleData"
+import { sampleData } from "./sampleData";
 
 //weather icons
 const weatherIcons = {
@@ -71,33 +71,35 @@ const Weather = ({ bgColor }) => {
 
   //get latitude & longitude on location change
   React.useEffect(() => {
-    if (location && process.env.REACT_APP_LOCATION_KEY) {
-      fetch(
-        "https://us1.locationiq.com/v1/search.php?key=" +
-          process.env.REACT_APP_LOCATION_KEY +
-          "&q=" +
-          location +
-          "&format=json&addressdetails=1"
-      )
-        .then(data => data.json())
-        .then(response => {
-          if (!response.error) {
-            const data = {
-              lat: response[0].lat,
-              lon: response[0].lon,
-              ...response[0].address
-            };
-            setLocationData(data);
-            setNewLocation(true);
-            updateLocalStorage({ locationData: data });
-          } else {
-            console.log("LocationIQ error: " + response.error);
-            setLocationData({});
-          }
-        });
-    } else {
-      console.log("No LocationIQ api key present");
-      setLocationData(sampleData.locationData)
+    if (location) {
+      if (process.env.REACT_APP_LOCATION_KEY) {
+        fetch(
+          "https://us1.locationiq.com/v1/search.php?key=" +
+            process.env.REACT_APP_LOCATION_KEY +
+            "&q=" +
+            location +
+            "&format=json&addressdetails=1"
+        )
+          .then(data => data.json())
+          .then(response => {
+            if (!response.error) {
+              const data = {
+                lat: response[0].lat,
+                lon: response[0].lon,
+                ...response[0].address
+              };
+              setLocationData(data);
+              setNewLocation(true);
+              updateLocalStorage({ locationData: data });
+            } else {
+              console.log("LocationIQ error: " + response.error);
+              setLocationData({});
+            }
+          });
+      } else {
+        console.log("No LocationIQ api key present");
+        setLocationData(sampleData.locationData);
+      }
     }
   }, [location]);
 
@@ -108,7 +110,8 @@ const Weather = ({ bgColor }) => {
     let weatherRepeater = null;
     const getWeather = () => {
       console.log("getWeather called");
-      const url =
+      if (process.env.REACT_APP_WEATHER_KEY) {
+        const url =
         "https://cors-anywhere.herokuapp.com/" +
         "https://api.darksky.net/forecast/" +
         process.env.REACT_APP_WEATHER_KEY +
@@ -117,7 +120,7 @@ const Weather = ({ bgColor }) => {
         "," +
         locationData.lon +
         "?units=si&exclude=minutely,hourly,flags";
-      fetch(url)
+        fetch(url)
         .then(response => response.json())
         .then(data => {
           setCurrentWeather(data.currently);
@@ -135,11 +138,17 @@ const Weather = ({ bgColor }) => {
           }
           updateLocalStorage(storagePayload);
           document.title =
-            Math.round(data.currently.temperature) + "\xB0 | New Tab";
+          Math.round(data.currently.temperature) + "\xB0 | New Tab";
         });
+
+      } else {
+        console.log("No DarkSky api key present");
+        setCurrentWeather(sampleData.currentlyData);
+        setFutureWeather(sampleData.dailyData);
+      }
     };
 
-    if (Object.keys(locationData).length !== 0 && process.env.REACT_APP_WEATHER_KEY) {
+    if (Object.keys(locationData).length !== 0) {
       //only run getWeather if saved data is too old (only happens on page load)
       const currentTime = moment()
         .add(-5, "m")
@@ -150,6 +159,7 @@ const Weather = ({ bgColor }) => {
         currentWeather.time <= currentTime ||
         newLocation
       ) {
+        setFutureWeather([])
         getWeather();
         setNewLocation(false);
       } else {
@@ -157,10 +167,6 @@ const Weather = ({ bgColor }) => {
           Math.round(currentWeather.temperature) + "\xB0 | New Tab";
       }
       weatherRepeater = setInterval(() => getWeather(), 1000 * 60 * 5);
-    } else {
-      console.log("No DarkSky api key present");
-      setCurrentWeather(sampleData.currentlyData)
-      setFutureWeather(sampleData.dailyData)
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);

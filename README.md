@@ -40,6 +40,7 @@ Future features:
 - TTC alerts for Toronto location (using twitter API - be change twitter subscription?)
 - Rendering animations for transitions
 - Toggle units
+- Deployed version (and handling without api keys)
 
 ---
 ### Installation Instructions:
@@ -71,3 +72,4 @@ Instructions:
 [CORS-Anywhere](https://cors-anywhere.herokuapp.com/) - [github](https://github.com/Rob--W/cors-anywhere)  
 [Simple Chrome Extension](https://medium.com/javascript-in-plain-english/https-medium-com-javascript-in-plain-english-how-to-build-a-simple-chrome-extension-in-vanilla-javascript-e52b2994aeeb)  
 [React + Chrome Extension](https://medium.com/@gilfink/building-a-chrome-extension-using-react-c5bfe45aaf36)  
+[React + GitHub Pages](https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f)

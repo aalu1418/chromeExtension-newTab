@@ -46,3 +46,39 @@
 //   const tweetData = await response.json();
 //   console.log(tweetData);
 // };
+
+import cheerio from 'cheerio'
+
+const corsProxy = "https://cors-anywhere.herokuapp.com/"
+
+export const ttcAlerts = async () => {
+  console.log("checking TTC alerts");
+  const alerts = await getAlerts()
+  const filteredAlerts = filterAlerts(alerts)
+  console.log(filteredAlerts);
+
+  return filterAlerts
+}
+
+const getAlerts = async () => {
+  const searchUrl = "https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp";
+  const response = await fetch(corsProxy+searchUrl);   // fetch page
+
+  const htmlString = await response.text();
+
+  // console.log(htmlString);
+  const $ = cheerio.load(htmlString)
+  return $("div.alert-content").map((i, elem) => $(elem).text()).get()
+}
+
+const filterAlerts = alerts => {
+  alerts = alerts.slice(0, -1).map(alert => {
+    const main_components = alert.split(": ")
+    const secondary_components = main_components[1].split(".Last updated ")
+    return {station: main_components[0], alert: secondary_components[0], time: secondary_components[1]}
+  })
+
+  alerts = alerts.filter(alert => !alert.alert.includes("Elevator"))
+
+  return alerts
+}

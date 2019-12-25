@@ -9,7 +9,7 @@ import LoadingAnimation from "./LoadingAnimation";
 import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
 import { updateLocalStorage, readLocalStorage } from "./updateLocalStorage";
-import { getBearerToken, getUserTimeline } from "./getTweets";
+import { ttcAlerts } from "./getTTCalerts";
 
 //weather icons
 const weatherIcons = {
@@ -52,7 +52,7 @@ const weatherIconPicker = (icon, time, sunrise, sunset) => {
 };
 
 //component for all weather data + inputting location
-const Weather = ({ bgColor}) => {
+const Weather = ({ bgColor }) => {
   const [location, setLocation] = React.useState(null);
   const [newLocation, setNewLocation] = React.useState(false);
   const [locationData, setLocationData] = React.useState(
@@ -87,15 +87,14 @@ const Weather = ({ bgColor}) => {
               lon: response[0].lon,
               ...response[0].address
             };
-              setLocationData(data);
-              setNewLocation(true)
-              updateLocalStorage({ locationData: data });
-
+            setLocationData(data);
+            setNewLocation(true);
+            updateLocalStorage({ locationData: data });
           } else {
-            console.log("LocationIQ error: "+response.error);
+            console.log("LocationIQ error: " + response.error);
             setLocationData({});
           }
-        })
+        });
     }
   }, [location]);
 
@@ -145,7 +144,8 @@ const Weather = ({ bgColor}) => {
       // console.log(currentWeather.time, currentTime);
       if (
         Object.keys(currentWeather).length === 0 ||
-        currentWeather.time <= currentTime || newLocation
+        currentWeather.time <= currentTime ||
+        newLocation
       ) {
         getWeather();
         setNewLocation(false);
@@ -162,8 +162,8 @@ const Weather = ({ bgColor}) => {
     if (event.key === "Enter") {
       if (event.target.value.trim() !== "") {
         setLocation(event.target.value);
-        setCurrentWeather({})
-        setFutureWeather([])
+        setCurrentWeather({});
+        setFutureWeather([]);
       }
       setActiveInput(false);
     }
@@ -328,7 +328,11 @@ const CurrentWeather = ({ current, alert, day, bgColor }) => {
           ></FontAwesomeIcon>
         )}
         {true && (
-          <div className="Weather-Alert Transit" onClick={getUserTimeline}>
+          <div
+            className="Weather-Alert Transit"
+            onClick={ttcAlerts}
+            style={{ backgroundColor: bgColor }}
+          >
             <FontAwesomeIcon icon={faSubway} />
           </div>
         )}

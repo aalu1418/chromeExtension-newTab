@@ -47,37 +47,56 @@
 //   console.log(tweetData);
 // };
 
-import cheerio from 'cheerio'
+import cheerio from "cheerio";
 
-const corsProxy = "https://cors-anywhere.herokuapp.com/"
+const corsProxy = "https://cors-anywhere.herokuapp.com/";
 
 export const ttcAlerts = async () => {
   console.log("checking TTC alerts");
-  const alerts = await getAlerts()
-  const filteredAlerts = filterAlerts(alerts)
+  const alerts = await getAlerts();
+  const filteredAlerts = filterAlerts(alerts);
 
-  return filteredAlerts
-}
+  return filteredAlerts;
+};
 
 const getAlerts = async () => {
-  const searchUrl = "https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp";
-  const response = await fetch(corsProxy+searchUrl);   // fetch page
+  const searchUrl =
+    "https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp";
+  const response = await fetch(corsProxy + searchUrl); // fetch page
 
   const htmlString = await response.text();
 
   // console.log(htmlString);
-  const $ = cheerio.load(htmlString)
-  return $("div.alert-content").map((i, elem) => $(elem).text()).get()
-}
+  const $ = cheerio.load(htmlString);
+  return $("div.alert-content")
+    .map((i, elem) => $(elem).text())
+    .get();
+};
 
 const filterAlerts = alerts => {
   alerts = alerts.slice(0, -1).map(alert => {
-    const main_components = alert.split(": ")
-    const secondary_components = main_components[1].split(".Last updated ")
-    return {station: main_components[0], alert: secondary_components[0], time: secondary_components[1]}
-  })
+    const main_components = alert.split(": ");
+    const secondary_components = main_components[1].split(".Last updated ");
+    return {
+      transit: main_components[0],
+      alert: secondary_components[0],
+      time: secondary_components[1]
+    };
+  });
 
-  alerts = alerts.filter(alert => !alert.alert.includes("Elevator"))
+  alerts = alerts.filter(alert => !alert.alert.includes("Elevator")); //filter out elevator alerts
+  const streetcarAlerts = alerts.filter(
+    alert =>
+      alert.transit[0] === "5" && alert.transit.split(" ")[0].length === 3
+  );
+  const subwayAlerts = alerts.filter(
+    alert => alert.transit.split(" ")[0] === "Line"
+  );
+  const extraAlerts = alerts.filter(alert =>
+    alert.transit.includes("Attention customers")
+  );
 
-  return alerts
-}
+  const outputAlerts = [...streetcarAlerts, ...subwayAlerts, ...extraAlerts];
+
+  return {alerts, outputAlerts};
+};

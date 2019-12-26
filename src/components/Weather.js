@@ -302,23 +302,37 @@ const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
     />
   ];
 
+  if (transitAlerts.length !== 0) {
+    const alertHTML = transitAlerts.map(alert => {
+      const twoLine = (
+        <ul style={{listStyleType:"none", padding: 0}}>
+          <li>TTC alert:</li>
+          <li>{alert.transit}</li>
+        </ul>
+      );
+      return <DescriptionText text={twoLine} />;
+    });
+    weatherData.splice(1, 0, ...alertHTML);
+  }
+
   if (Object.keys(alert).length !== 0) {
     weatherData.splice(1, 0, <DescriptionText text={alert.title} />);
   }
 
+
   React.useEffect(() => {
-    let transitRepeater = null
+    let transitRepeater = null;
     const getTransitAlerts = async () => {
       if (location.city === "Toronto") {
         const alerts = await ttcAlerts();
-        setTransitAlerts(alerts);
+        setTransitAlerts(alerts.outputAlerts);
         console.log(alerts);
       }
     };
     getTransitAlerts();
-    transitRepeater = setInterval(() => getTransitAlerts(), 1000*60*5)
-    return () => clearInterval(transitRepeater)
-  }, [location.city])
+    transitRepeater = setInterval(() => getTransitAlerts(), 1000 * 60 * 5);
+    return () => clearInterval(transitRepeater);
+  }, [location.city]);
 
   return (
     <div

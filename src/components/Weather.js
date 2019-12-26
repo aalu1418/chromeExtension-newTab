@@ -305,9 +305,13 @@ const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
   if (transitAlerts.length !== 0) {
     const alertHTML = transitAlerts.map(alert => {
       const twoLine = (
-        <ul style={{listStyleType:"none", padding: 0}}>
+        <ul style={{ listStyleType: "none", padding: 0 }}>
           <li>TTC alert:</li>
-          <li>{alert.transit}</li>
+          <li>
+            <a href="https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp">
+              {alert.transit}
+            </a>
+          </li>
         </ul>
       );
       return <DescriptionText text={twoLine} />;
@@ -318,7 +322,6 @@ const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
   if (Object.keys(alert).length !== 0) {
     weatherData.splice(1, 0, <DescriptionText text={alert.title} />);
   }
-
 
   React.useEffect(() => {
     let transitRepeater = null;

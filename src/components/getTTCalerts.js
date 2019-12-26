@@ -55,9 +55,8 @@ export const ttcAlerts = async () => {
   console.log("checking TTC alerts");
   const alerts = await getAlerts()
   const filteredAlerts = filterAlerts(alerts)
-  console.log(filteredAlerts);
 
-  return filterAlerts
+  return filteredAlerts
 }
 
 const getAlerts = async () => {

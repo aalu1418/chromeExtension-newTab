@@ -142,18 +142,16 @@ const Weather = ({ bgColor }) => {
         .add(-5, "m")
         .unix();
       // console.log(currentWeather.time, currentTime);
-      if (
-        Object.keys(currentWeather).length === 0 ||
-        currentWeather.time <= currentTime ||
-        newLocation
-      ) {
+      if (currentWeather.time <= currentTime || newLocation) {
         getWeather();
         setNewLocation(false);
       } else {
         document.title =
           Math.round(currentWeather.temperature) + "\xB0 | New Tab";
       }
-      weatherRepeater = setInterval(() => getWeather(), 1000 * 60 * 5);
+      weatherRepeater = setInterval(() => {
+        getWeather();
+      }, 1000 * 60 * 5);
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);
@@ -214,6 +212,7 @@ const Weather = ({ bgColor }) => {
               future={futureWeather}
               alert={alertWeather}
               bgColor={bgColor}
+              location={locationData}
             />
           ) : (
             <LoadingAnimation />
@@ -225,7 +224,7 @@ const Weather = ({ bgColor }) => {
 };
 
 //component for entire weather forecast
-const WeatherDisplay = ({ current, future, alert, bgColor }) => {
+const WeatherDisplay = ({ current, future, alert, bgColor, location }) => {
   return (
     <div className="WeatherDisplay">
       {current && (
@@ -234,6 +233,7 @@ const WeatherDisplay = ({ current, future, alert, bgColor }) => {
           alert={alert}
           day={future[0]}
           bgColor={bgColor}
+          location={location}
         />
       )}
       {future &&
@@ -282,8 +282,9 @@ const FutureWeather = ({ day }) => {
 };
 
 //component for current weather + associated data
-const CurrentWeather = ({ current, alert, day, bgColor }) => {
+const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
   const [index, setIndex] = React.useState(0);
+  const [transitAlerts, setTransitAlerts] = React.useState([]);
   day = { sunriseTime: 0, sunsetTime: 0, ...day };
 
   const weatherData = [
@@ -304,6 +305,20 @@ const CurrentWeather = ({ current, alert, day, bgColor }) => {
   if (Object.keys(alert).length !== 0) {
     weatherData.splice(1, 0, <DescriptionText text={alert.title} />);
   }
+
+  React.useEffect(() => {
+    let transitRepeater = null
+    const getTransitAlerts = async () => {
+      if (location.city === "Toronto") {
+        const alerts = await ttcAlerts();
+        setTransitAlerts(alerts);
+        console.log(alerts);
+      }
+    };
+    getTransitAlerts();
+    transitRepeater = setInterval(() => getTransitAlerts(), 1000*60*5)
+    return () => clearInterval(transitRepeater)
+  }, [location.city])
 
   return (
     <div
@@ -327,10 +342,9 @@ const CurrentWeather = ({ current, alert, day, bgColor }) => {
             style={{ backgroundColor: bgColor }}
           ></FontAwesomeIcon>
         )}
-        {true && (
+        {transitAlerts.length !== 0 && (
           <div
             className="Weather-Alert Transit"
-            onClick={ttcAlerts}
             style={{ backgroundColor: bgColor }}
           >
             <FontAwesomeIcon icon={faSubway} />

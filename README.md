@@ -34,13 +34,10 @@ Added features:
 - More detailed weather icon usage (icons change depending on current time and/or precipitation time)
 - Custom colors
 - Fullscreen clock mode
+- Shows link to alert if TTC subways or streetcars have service alerts
 
 Future features:
-- icon for extension
-- TTC alerts for Toronto location (html scraping)
-- Rendering animations for transitions
 - Toggle units
-- better location printing algorithm
 
 ---
 ### Installation Instructions:

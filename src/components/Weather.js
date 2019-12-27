@@ -9,11 +9,8 @@ import LoadingAnimation from "./LoadingAnimation";
 import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
 import { updateLocalStorage, readLocalStorage } from "./updateLocalStorage";
-<<<<<<< HEAD
 import { sampleData } from "./sampleData";
-=======
 import { ttcAlerts } from "./getTTCalerts";
->>>>>>> ttc_alerts
 
 //weather icons
 const weatherIcons = {
@@ -76,7 +73,6 @@ const Weather = ({ bgColor }) => {
   //get latitude & longitude on location change
   React.useEffect(() => {
     if (location) {
-<<<<<<< HEAD
       if (process.env.REACT_APP_LOCATION_KEY) {
         fetch(
           "https://us1.locationiq.com/v1/search.php?key=" +
@@ -105,31 +101,6 @@ const Weather = ({ bgColor }) => {
         console.log("No LocationIQ api key present");
         setLocationData(sampleData.locationData);
       }
-=======
-      fetch(
-        "https://us1.locationiq.com/v1/search.php?key=" +
-          process.env.REACT_APP_LOCATION_KEY +
-          "&q=" +
-          location +
-          "&format=json&addressdetails=1"
-      )
-        .then(data => data.json())
-        .then(response => {
-          if (!response.error) {
-            const data = {
-              lat: response[0].lat,
-              lon: response[0].lon,
-              ...response[0].address
-            };
-            setLocationData(data);
-            setNewLocation(true);
-            updateLocalStorage({ locationData: data });
-          } else {
-            console.log("LocationIQ error: " + response.error);
-            setLocationData({});
-          }
-        });
->>>>>>> ttc_alerts
     }
   }, [location]);
 
@@ -142,35 +113,34 @@ const Weather = ({ bgColor }) => {
       console.log("getWeather called");
       if (process.env.REACT_APP_WEATHER_KEY) {
         const url =
-        "https://cors-anywhere.herokuapp.com/" +
-        "https://api.darksky.net/forecast/" +
-        process.env.REACT_APP_WEATHER_KEY +
-        "/" +
-        locationData.lat +
-        "," +
-        locationData.lon +
-        "?units=si&exclude=minutely,hourly,flags";
+          "https://cors-anywhere.herokuapp.com/" +
+          "https://api.darksky.net/forecast/" +
+          process.env.REACT_APP_WEATHER_KEY +
+          "/" +
+          locationData.lat +
+          "," +
+          locationData.lon +
+          "?units=si&exclude=minutely,hourly,flags";
         fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          setCurrentWeather(data.currently);
-          setFutureWeather(data.daily.data.slice(0, 6));
-          let storagePayload = {
-            currentlyData: data.currently,
-            dailyData: data.daily.data.slice(0, 6),
-            alertData: {}
-          };
-          if (data.alerts) {
-            setAlertWeather(data.alerts[0]);
-            storagePayload = { ...storagePayload, alertData: data.alerts[0] };
-          } else {
-            setAlertWeather({});
-          }
-          updateLocalStorage(storagePayload);
-          document.title =
-          Math.round(data.currently.temperature) + "\xB0 | New Tab";
-        });
-
+          .then(response => response.json())
+          .then(data => {
+            setCurrentWeather(data.currently);
+            setFutureWeather(data.daily.data.slice(0, 6));
+            let storagePayload = {
+              currentlyData: data.currently,
+              dailyData: data.daily.data.slice(0, 6),
+              alertData: {}
+            };
+            if (data.alerts) {
+              setAlertWeather(data.alerts[0]);
+              storagePayload = { ...storagePayload, alertData: data.alerts[0] };
+            } else {
+              setAlertWeather({});
+            }
+            updateLocalStorage(storagePayload);
+            document.title =
+              Math.round(data.currently.temperature) + "\xB0 | New Tab";
+          });
       } else {
         console.log("No DarkSky api key present");
         setCurrentWeather(sampleData.currentlyData);
@@ -184,16 +154,7 @@ const Weather = ({ bgColor }) => {
         .add(-5, "m")
         .unix();
       // console.log(currentWeather.time, currentTime);
-<<<<<<< HEAD
-      if (
-        Object.keys(currentWeather).length === 0 ||
-        currentWeather.time <= currentTime ||
-        newLocation
-      ) {
-        setFutureWeather([])
-=======
       if (currentWeather.time <= currentTime || newLocation) {
->>>>>>> ttc_alerts
         getWeather();
         setNewLocation(false);
       } else {
@@ -354,20 +315,19 @@ const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
   ];
 
   if (transitAlerts.length !== 0) {
-    const alertHTML = transitAlerts.map(alert => {
-      const twoLine = (
-        <ul style={{ listStyleType: "none", padding: 0 }}>
-          <li>TTC alert:</li>
-          <li>
+    const multiLine = (
+      <ul style={{ listStyleType: "none", padding: 0 }}>
+        <li>TTC alert:</li>
+        {transitAlerts.map(alert => (
+          <li key={alert.transit}>
             <a href="https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp">
               {alert.transit}
             </a>
           </li>
-        </ul>
-      );
-      return <DescriptionText text={twoLine} />;
-    });
-    weatherData.splice(1, 0, ...alertHTML);
+        ))}
+      </ul>
+    );
+    weatherData.splice(1, 0, <DescriptionText text={multiLine} />);
   }
 
   if (Object.keys(alert).length !== 0) {

@@ -14,3 +14,17 @@ export const readLocalStorage = key => {
     return false
   }
 }
+
+export const removeLocalStorage = key => {
+  const data = JSON.parse(localStorage.getItem("newTabExtensionData"))
+  try {
+    delete data[key]
+  } catch (e) {
+
+  } finally {
+    localStorage.setItem(
+      "newTabExtensionData",
+      JSON.stringify(data)
+    );
+  }
+}

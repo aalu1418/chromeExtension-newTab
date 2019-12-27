@@ -1,3 +1,7 @@
+a {
+  color: inherit;
+}
+
 .Weather {
   display: flex;
   flex-direction: column;

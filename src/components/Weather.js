@@ -9,7 +9,11 @@ import LoadingAnimation from "./LoadingAnimation";
 import "./Weather.css";
 import "../../node_modules/weather-icons/css/weather-icons.css";
 import { updateLocalStorage, readLocalStorage } from "./updateLocalStorage";
+<<<<<<< HEAD
 import { sampleData } from "./sampleData";
+=======
+import { ttcAlerts } from "./getTTCalerts";
+>>>>>>> ttc_alerts
 
 //weather icons
 const weatherIcons = {
@@ -72,6 +76,7 @@ const Weather = ({ bgColor }) => {
   //get latitude & longitude on location change
   React.useEffect(() => {
     if (location) {
+<<<<<<< HEAD
       if (process.env.REACT_APP_LOCATION_KEY) {
         fetch(
           "https://us1.locationiq.com/v1/search.php?key=" +
@@ -100,6 +105,31 @@ const Weather = ({ bgColor }) => {
         console.log("No LocationIQ api key present");
         setLocationData(sampleData.locationData);
       }
+=======
+      fetch(
+        "https://us1.locationiq.com/v1/search.php?key=" +
+          process.env.REACT_APP_LOCATION_KEY +
+          "&q=" +
+          location +
+          "&format=json&addressdetails=1"
+      )
+        .then(data => data.json())
+        .then(response => {
+          if (!response.error) {
+            const data = {
+              lat: response[0].lat,
+              lon: response[0].lon,
+              ...response[0].address
+            };
+            setLocationData(data);
+            setNewLocation(true);
+            updateLocalStorage({ locationData: data });
+          } else {
+            console.log("LocationIQ error: " + response.error);
+            setLocationData({});
+          }
+        });
+>>>>>>> ttc_alerts
     }
   }, [location]);
 
@@ -154,19 +184,25 @@ const Weather = ({ bgColor }) => {
         .add(-5, "m")
         .unix();
       // console.log(currentWeather.time, currentTime);
+<<<<<<< HEAD
       if (
         Object.keys(currentWeather).length === 0 ||
         currentWeather.time <= currentTime ||
         newLocation
       ) {
         setFutureWeather([])
+=======
+      if (currentWeather.time <= currentTime || newLocation) {
+>>>>>>> ttc_alerts
         getWeather();
         setNewLocation(false);
       } else {
         document.title =
           Math.round(currentWeather.temperature) + "\xB0 | New Tab";
       }
-      weatherRepeater = setInterval(() => getWeather(), 1000 * 60 * 5);
+      weatherRepeater = setInterval(() => {
+        getWeather();
+      }, 1000 * 60 * 5);
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);
@@ -227,6 +263,7 @@ const Weather = ({ bgColor }) => {
               future={futureWeather}
               alert={alertWeather}
               bgColor={bgColor}
+              location={locationData}
             />
           ) : (
             <LoadingAnimation />
@@ -238,7 +275,7 @@ const Weather = ({ bgColor }) => {
 };
 
 //component for entire weather forecast
-const WeatherDisplay = ({ current, future, alert, bgColor }) => {
+const WeatherDisplay = ({ current, future, alert, bgColor, location }) => {
   return (
     <div className="WeatherDisplay">
       {current && (
@@ -247,6 +284,7 @@ const WeatherDisplay = ({ current, future, alert, bgColor }) => {
           alert={alert}
           day={future[0]}
           bgColor={bgColor}
+          location={location}
         />
       )}
       {future &&
@@ -295,8 +333,9 @@ const FutureWeather = ({ day }) => {
 };
 
 //component for current weather + associated data
-const CurrentWeather = ({ current, alert, day, bgColor }) => {
+const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
   const [index, setIndex] = React.useState(0);
+  const [transitAlerts, setTransitAlerts] = React.useState([]);
   day = { sunriseTime: 0, sunsetTime: 0, ...day };
 
   const weatherData = [
@@ -314,9 +353,40 @@ const CurrentWeather = ({ current, alert, day, bgColor }) => {
     />
   ];
 
+  if (transitAlerts.length !== 0) {
+    const alertHTML = transitAlerts.map(alert => {
+      const twoLine = (
+        <ul style={{ listStyleType: "none", padding: 0 }}>
+          <li>TTC alert:</li>
+          <li>
+            <a href="https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp">
+              {alert.transit}
+            </a>
+          </li>
+        </ul>
+      );
+      return <DescriptionText text={twoLine} />;
+    });
+    weatherData.splice(1, 0, ...alertHTML);
+  }
+
   if (Object.keys(alert).length !== 0) {
     weatherData.splice(1, 0, <DescriptionText text={alert.title} />);
   }
+
+  React.useEffect(() => {
+    let transitRepeater = null;
+    const getTransitAlerts = async () => {
+      if (location.city === "Toronto") {
+        const alerts = await ttcAlerts();
+        setTransitAlerts(alerts.outputAlerts);
+        console.log(alerts);
+      }
+    };
+    getTransitAlerts();
+    transitRepeater = setInterval(() => getTransitAlerts(), 1000 * 60 * 5);
+    return () => clearInterval(transitRepeater);
+  }, [location.city]);
 
   return (
     <div
@@ -340,8 +410,11 @@ const CurrentWeather = ({ current, alert, day, bgColor }) => {
             style={{ backgroundColor: bgColor }}
           ></FontAwesomeIcon>
         )}
-        {false && (
-          <div className="Weather-Alert Transit">
+        {transitAlerts.length !== 0 && (
+          <div
+            className="Weather-Alert Transit"
+            style={{ backgroundColor: bgColor }}
+          >
             <FontAwesomeIcon icon={faSubway} />
           </div>
         )}

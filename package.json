@@ -17,7 +17,6 @@
     "weather-icons": "^1.3.2"
   },
   "scripts": {
-    "github-pages": "react-scripts build && rm -rf docs && mv build docs",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

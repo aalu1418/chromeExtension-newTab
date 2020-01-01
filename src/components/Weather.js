@@ -111,44 +111,41 @@ const Weather = ({ bgColor }) => {
     let weatherRepeater = null;
     const getWeather = () => {
       console.log("getWeather called");
-      if (process.env.REACT_APP_WEATHER_KEY) {
-        const url =
-          "https://cors-anywhere.herokuapp.com/" +
-          "https://api.darksky.net/forecast/" +
-          process.env.REACT_APP_WEATHER_KEY +
-          "/" +
-          locationData.lat +
-          "," +
-          locationData.lon +
-          "?units=si&exclude=minutely,hourly,flags";
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            setCurrentWeather(data.currently);
-            setFutureWeather(data.daily.data.slice(0, 6));
-            let storagePayload = {
-              currentlyData: data.currently,
-              dailyData: data.daily.data.slice(0, 6),
-              alertData: {}
-            };
-            if (data.alerts) {
-              setAlertWeather(data.alerts[0]);
-              storagePayload = { ...storagePayload, alertData: data.alerts[0] };
-            } else {
-              setAlertWeather({});
-            }
-            updateLocalStorage(storagePayload);
-            document.title =
-              Math.round(data.currently.temperature) + "\xB0 | New Tab";
-          });
-      } else {
-        console.log("No DarkSky api key present");
-        setCurrentWeather(sampleData.currentlyData);
-        setFutureWeather(sampleData.dailyData);
-      }
+      const url =
+        "https://cors-anywhere.herokuapp.com/" +
+        "https://api.darksky.net/forecast/" +
+        process.env.REACT_APP_WEATHER_KEY +
+        "/" +
+        locationData.lat +
+        "," +
+        locationData.lon +
+        "?units=si&exclude=minutely,hourly,flags";
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          setCurrentWeather(data.currently);
+          setFutureWeather(data.daily.data.slice(0, 6));
+          let storagePayload = {
+            currentlyData: data.currently,
+            dailyData: data.daily.data.slice(0, 6),
+            alertData: {}
+          };
+          if (data.alerts) {
+            setAlertWeather(data.alerts[0]);
+            storagePayload = { ...storagePayload, alertData: data.alerts[0] };
+          } else {
+            setAlertWeather({});
+          }
+          updateLocalStorage(storagePayload);
+          document.title =
+            Math.round(data.currently.temperature) + "\xB0 | New Tab";
+        });
     };
 
-    if (Object.keys(locationData).length !== 0) {
+    if (
+      Object.keys(locationData).length !== 0 &&
+      process.env.REACT_APP_WEATHER_KEY
+    ) {
       //only run getWeather if saved data is too old (only happens on page load)
       const currentTime = moment()
         .add(-5, "m")
@@ -164,6 +161,12 @@ const Weather = ({ bgColor }) => {
       weatherRepeater = setInterval(() => {
         getWeather();
       }, 1000 * 60 * 5);
+    }
+
+    if (!process.env.REACT_APP_WEATHER_KEY) {
+      console.log("No DarkSky api key present");
+      setCurrentWeather(sampleData.currentlyData);
+      setFutureWeather(sampleData.dailyData);
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);

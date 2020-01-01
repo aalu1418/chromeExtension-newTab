@@ -2,7 +2,6 @@
   "name": "newTab-chromeExtension",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://aalu1418.github.io/chromeExtension-newTab/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
@@ -18,8 +17,6 @@
     "weather-icons": "^1.3.2"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

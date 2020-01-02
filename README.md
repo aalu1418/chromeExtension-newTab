@@ -10,9 +10,12 @@ Geocoding: [LocationIQ](https://locationiq.com/)
 Time: [Moment JS](https://momentjs.com/)  
 React: [React JS](https://reactjs.org/)  
 Icons: [Weather Icons](https://www.npmjs.com/package/weather-icons) & [Font Awesome](https://fontawesome.com/)  
+Hosting: [Zeit](https://zeit.co/)  
 
 ---
 ### Application Views:
+Demo: [Hosted on Zeit](https://chromeextension-newtab.aalu1418.now.sh/) - defaults to random day in Toronto (does not use API keys)
+
 ![](./screenshot0.png)
 
 ![](./screenshot1.png)

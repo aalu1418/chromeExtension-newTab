@@ -10,7 +10,7 @@ Geocoding: [LocationIQ](https://locationiq.com/)
 Time: [Moment JS](https://momentjs.com/)  
 React: [React JS](https://reactjs.org/)  
 Icons: [Weather Icons](https://www.npmjs.com/package/weather-icons) & [Font Awesome](https://fontawesome.com/)  
-Hosting: [Zeit](https://zeit.co/)  
+Hosting: [Zeit](https://zeit.co/) - does not support ```postbuild: react-snap``` (need to remove before pushing to Zeit)
 
 ---
 ### Application Views:

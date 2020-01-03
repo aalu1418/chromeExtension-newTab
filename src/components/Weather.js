@@ -53,7 +53,7 @@ const weatherIconPicker = (icon, time, sunrise, sunset) => {
 };
 
 //component for all weather data + inputting location
-const Weather = ({ bgColor }) => {
+const Weather = ({ bgColor, unit }) => {
   const [location, setLocation] = React.useState(null);
   const [newLocation, setNewLocation] = React.useState(false);
   const [locationData, setLocationData] = React.useState(
@@ -228,6 +228,7 @@ const Weather = ({ bgColor }) => {
               alert={alertWeather}
               bgColor={bgColor}
               location={locationData}
+              unit={unit}
             />
           ) : (
             <LoadingAnimation />
@@ -239,7 +240,7 @@ const Weather = ({ bgColor }) => {
 };
 
 //component for entire weather forecast
-const WeatherDisplay = ({ current, future, alert, bgColor, location }) => {
+const WeatherDisplay = ({ current, future, alert, bgColor, location, unit }) => {
   return (
     <div className="WeatherDisplay">
       {current && (
@@ -249,28 +250,29 @@ const WeatherDisplay = ({ current, future, alert, bgColor, location }) => {
           day={future[0]}
           bgColor={bgColor}
           location={location}
+          unit={unit}
         />
       )}
       {future &&
         future.map(day => (
-          <FutureWeather key={moment.unix(day.time).format("dddd")} day={day} />
+          <FutureWeather key={moment.unix(day.time).format("dddd")} day={day} unit={unit}/>
         ))}
     </div>
   );
 };
 
 //component for single day future weather
-const FutureWeather = ({ day }) => {
+const FutureWeather = ({ day, unit }) => {
   const [index, setIndex] = React.useState(0);
 
   const weatherData = [
     <TempDisplay text={moment.unix(day.time).format("dddd")}>
-      <span>{Math.round(day.temperatureHigh)}</span>
-      <span className="Weather-LowTemp">{Math.round(day.temperatureLow)}</span>
+      <span>{tempConvert(day.temperatureHigh, unit)}</span>
+      <span className="Weather-LowTemp">{tempConvert(day.temperatureLow, unit)}</span>
     </TempDisplay>,
     <DescriptionText text={day.summary} />,
     <PrecipChance data={day} />,
-    <WindData data={day} />,
+    <WindData data={day} unit={unit} />,
     <MoonData data={day} />,
     <DescriptionText text={`Humidity: ${Math.round(day.humidity * 100)}%`} />
   ];
@@ -297,21 +299,21 @@ const FutureWeather = ({ day }) => {
 };
 
 //component for current weather + associated data
-const CurrentWeather = ({ current, alert, day, bgColor, location }) => {
+const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
   const [index, setIndex] = React.useState(0);
   const [transitAlerts, setTransitAlerts] = React.useState([]);
   day = { sunriseTime: 0, sunsetTime: 0, ...day };
 
   const weatherData = [
     <TempDisplay text="Now">
-      <span>{Math.round(current.temperature || null)}</span>
+      <span>{tempConvert(current.temperature || null, unit)}</span>
     </TempDisplay>,
     <DescriptionText text={current.summary} />,
     <TempDisplay text="Feels like" textClass="Weather-Display-SmallText">
-      <span>{Math.round(current.apparentTemperature || null)}</span>
+      <span>{tempConvert(current.apparentTemperature || null, unit)}</span>
     </TempDisplay>,
     <PrecipChance data={current} />,
-    <WindData data={current} />,
+    <WindData data={current} unit={unit}/>,
     <DescriptionText
       text={`Humidity: ${Math.round(current.humidity * 100)}%`}
     />
@@ -424,7 +426,7 @@ const PrecipChance = ({ data }) => {
   );
 };
 
-const WindData = ({ data }) => {
+const WindData = ({ data, unit }) => {
   const icon = weatherIcons["windDirection"];
   const rotationAngle =
     data.windSpeed !== 0 ? (data.windBearing + 180) % 360 : 0;
@@ -437,12 +439,8 @@ const WindData = ({ data }) => {
       />
       {data.windBearing && (
         <span>
-          <div className="Weather-Display-SmallText">{`${Math.round(
-            data.windSpeed
-          )} m/s`}</div>
-          <div className="Weather-Display-SmallText">{`${Math.round(
-            data.windGust
-          )} m/s (gusts)`}</div>
+          <div className="Weather-Display-SmallText">{speedConvert(data.windSpeed, unit)}</div>
+          <div className="Weather-Display-SmallText">{`${speedConvert(data.windGust, unit)} (gusts)`}</div>
         </span>
       )}
     </span>
@@ -502,7 +500,7 @@ const MoonData = ({ data }) => {
   return (
     <span className="Weather-TempDisplay">
       <i className={`wi wi-moon-${icon.join("-").toLowerCase()}`} />
-      {data.windBearing && (
+      {data.moonPhase && (
         <span>
           <div className="Weather-Display-SmallText">{description}</div>
         </span>
@@ -510,5 +508,21 @@ const MoonData = ({ data }) => {
     </span>
   );
 };
+
+const tempConvert = (temp, unit) => {
+  if (unit === "us") {
+    return Math.round(temp*9/5 + 32)
+  } else {
+    return Math.round(temp)
+  }
+}
+
+const speedConvert = (speed, unit) => {
+  if (unit === "us") {
+    return `${Math.round(speed*2.23694)} mph`
+  } else {
+    return `${Math.round(speed)} m/s`
+  }
+}
 
 export default Weather;

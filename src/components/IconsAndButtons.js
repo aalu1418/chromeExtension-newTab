@@ -9,18 +9,27 @@ import locationIQ from "../images/locationiq-logo.png";
 import catGif from "../images/pusheen.gif";
 import { updateLocalStorage } from "./updateLocalStorage";
 
-const IconsAndButtons = ({ color, setColor, fontColor }) => {
+const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
   const menuStyle = openSettings
     ? { border: "2px solid", backgroundColor: color, height: "13rem" }
     : {};
 
+  const unitOnClick = event => {
+    unit.setUnit(event.target.id);
+    updateLocalStorage({ unit: event.target.id });
+  };
+
   return (
-    <div id="Frame" className={openSettings ? "Frame" : ""} onClick={event => {
+    <div
+      id="Frame"
+      className={openSettings ? "Frame" : ""}
+      onClick={event => {
         if (event.target.id === "Frame") {
-          setOpenSettings(false)
+          setOpenSettings(false);
         }
-      }}>
+      }}
+    >
       <div className="IconsAndButtons" style={menuStyle}>
         <Settings
           state={openSettings}
@@ -37,6 +46,26 @@ const IconsAndButtons = ({ color, setColor, fontColor }) => {
                 setColor(color.hex);
               }}
             />
+            <div className="IconsAndButtons-UnitToggle">
+              <button
+                className={`UnitToggle-Button ${
+                  unit.unit === "si" ? "Selected" : ""
+                }`}
+                id="si"
+                onClick={unitOnClick}
+              >
+                Metric
+              </button>
+              <button
+                className={`UnitToggle-Button ${
+                  unit.unit === "us" ? "Selected" : ""
+                }`}
+                id="us"
+                onClick={unitOnClick}
+              >
+                Imperial
+              </button>
+            </div>
           </div>
         )}
         {openSettings && <CatGif state={openSettings} />}

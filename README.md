@@ -25,10 +25,10 @@ Demo: [Hosted on Zeit](https://chromeextension-newtab.aalu1418.now.sh/) - defaul
 Originally inspired by [Currently Chrome Extension](https://chrome.google.com/webstore/detail/currently/ojhmphdkpgbibohbnpbfiefkgieacjmh?hl=en)
 
 Added features:
-- More detailed weather information (click on the forecast for ```Now``` or each day)
+- More detailed weather information (click on the forecast for `Now` or each day)
   - Weather alerts (if present)
   - Summary
-  - Feels like temperature (on ```Now``` only)
+  - Feels like temperature (on `Now` only)
   - Precipitation probability
   - Wind data
   - Phases of the moon
@@ -38,9 +38,7 @@ Added features:
 - Custom colors
 - Fullscreen clock mode
 - Shows link to alert if TTC subways or streetcars have service alerts
-
-Future features:
-- Toggle units
+- Convert between imperial and metric units
 
 ---
 ### Installation Instructions:
@@ -53,18 +51,18 @@ Needed (API keys):
 
 Instructions:
 
-1. ```git clone https://github.com/aalu1418/chromeExtension-newTab```
-1. Navigate to the ```chromeExtension-newTab``` folder and run ```npm install```
-1. Create a ```.env``` file in the same folder as the ```package.json``` file. It should include:
+1. `git clone https://github.com/aalu1418/chromeExtension-newTab`
+1. Navigate to the `chromeExtension-newTab` folder and run `npm install`
+1. Create a `.env` file in the same folder as the `package.json` file. It should include:
   ```
   REACT_APP_LOCATION_KEY= <your-location-key-here>
   REACT_APP_WEATHER_KEY= <your-weather-key-here>
   ```
-1. Run ```npm run build```
-1. In Google Chrome, go to ```chrome://extensions``` and enable ```Developer mode```
-1. Select ```Pack extension``` and in the ```Extension root directory``` browse to the ```build``` folder
-1. Select ```Pack extension``` and two files will be generated ```build.crx``` and ```build.pem```
-1. From your file browser, click and drag ```build.crx``` onto the ```chrome://extensions``` page and install the extension
+1. Run `npm run build`
+1. In Google Chrome, go to `chrome://extensions` and enable `Developer mode`
+1. Select `Pack extension` and in the `Extension root directory` browse to the `build` folder
+1. Select `Pack extension` and two files will be generated `build.crx` and `build.pem`
+1. From your file browser, click and drag `build.crx` onto the `chrome://extensions` page and install the extension
 
 ---
 ### Resources:

@@ -87,13 +87,21 @@ const filterAlerts = alerts => {
   alerts = alerts.filter(alert => !alert.alert.includes("Elevator")); //filter out elevator alerts
   const streetcarAlerts = alerts.filter(
     alert =>
-      alert.transit[0] === "5" && alert.transit.split(" ")[0].length === 3
+      alert.transit[0] === "5" && alert.transit.split(" ")[0].length === 3 && Number(alert.transit.split(" ")[0])
+  ).filter(
+    alert => !alert.alert.includes("Regular")
   );
   const subwayAlerts = alerts.filter(
     alert => alert.transit.split(" ")[0] === "Line"
+  ).filter(
+    alert => !alert.alert.includes("Regular")
   );
   const extraAlerts = alerts.filter(alert =>
-    alert.transit.includes("Attention customers")
+    alert.transit.includes("Attention Customers")
+  ).filter(
+    alert => alert.alert.includes("Line") || (alert.alert[0] === "5" && alert.alert.split(" ")[0].length === 3 && Number(alert.alert.split(" ")[0]))
+  ).filter(
+    alert => !alert.alert.includes("Regular")
   );
 
   const outputAlerts = [...streetcarAlerts, ...subwayAlerts, ...extraAlerts];

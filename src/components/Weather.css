@@ -87,9 +87,10 @@ input.Weather-Input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #b71c1c;
   font-size: 16pt;
-  border: 2pt solid #b71c1c;
-  padding: 3.5px;
+  border: 2pt solid;
+  padding: 0.35rem;
   left: 90px;
   top: -15px;
   min-width: 20px;

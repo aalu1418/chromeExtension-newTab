@@ -131,6 +131,7 @@ const Weather = ({ bgColor, unit }) => {
             alertData: {}
           };
           if (data.alerts) {
+            console.log(data.alerts);
             setAlertWeather(data.alerts[0]);
             storagePayload = { ...storagePayload, alertData: data.alerts[0] };
           } else {
@@ -336,7 +337,9 @@ const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
   }
 
   if (Object.keys(alert).length !== 0) {
-    weatherData.splice(1, 0, <DescriptionText text={alert.title} />);
+    console.log(alert.uri);
+    const output = (<a href={alert.uri}>{alert.title}</a>)
+    weatherData.splice(1, 0, <DescriptionText text={output} />);
   }
 
   React.useEffect(() => {
@@ -378,9 +381,9 @@ const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
         {transitAlerts.length !== 0 && (
           <div
             className="Weather-Alert Transit"
-            style={{ backgroundColor: bgColor }}
+            style = {{borderColor: bgColor}}
           >
-            <FontAwesomeIcon icon={faSubway} />
+            <FontAwesomeIcon icon={faSubway} style={{color: bgColor}}/>
           </div>
         )}
       </div>

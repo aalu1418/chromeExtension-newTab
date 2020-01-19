@@ -74,7 +74,11 @@ const getAlerts = async () => {
 };
 
 const filterAlerts = alerts => {
-  alerts = alerts.slice(0, -1).map(alert => {
+  //filter out general alerts
+  alerts = alerts.slice(0, -1).filter(alert => alert.split(": ").length === 2);
+
+  //split alerts into transit, alert, and time
+  alerts = alerts.map(alert => {
     const main_components = alert.split(": ");
     const secondary_components = main_components[1].split(".Last updated ");
     return {
@@ -85,26 +89,31 @@ const filterAlerts = alerts => {
   });
 
   alerts = alerts.filter(alert => !alert.alert.includes("Elevator")); //filter out elevator alerts
-  const streetcarAlerts = alerts.filter(
-    alert =>
-      alert.transit[0] === "5" && alert.transit.split(" ")[0].length === 3 && Number(alert.transit.split(" ")[0])
-  ).filter(
-    alert => !alert.alert.includes("Regular")
-  );
-  const subwayAlerts = alerts.filter(
-    alert => alert.transit.split(" ")[0] === "Line"
-  ).filter(
-    alert => !alert.alert.includes("Regular")
-  );
-  const extraAlerts = alerts.filter(alert =>
-    alert.transit.includes("Attention Customers")
-  ).filter(
-    alert => alert.alert.includes("Line") || (alert.alert[0] === "5" && alert.alert.split(" ")[0].length === 3 && Number(alert.alert.split(" ")[0]))
-  ).filter(
-    alert => !alert.alert.includes("Regular")
-  );
+  const streetcarAlerts = alerts
+    .filter(
+      alert =>
+        alert.transit[0] === "5" &&
+        (alert.transit.split(" ")[0].length === 3 ||
+          alert.transit.split(" ")[0].length === 4) &&
+        Number(alert.transit.split(" ")[0].slice(0, 3))
+    )
+    .filter(alert => !alert.alert.includes("Regular"));
+  const subwayAlerts = alerts
+    .filter(alert => alert.transit.split(" ")[0] === "Line")
+    .filter(alert => !alert.alert.includes("Regular"));
+  const extraAlerts = alerts
+    .filter(alert => alert.transit.includes("Attention Customers"))
+    .filter(
+      alert =>
+        alert.alert.includes("Line") ||
+        (alert.transit[0] === "5" &&
+          (alert.transit.split(" ")[0].length === 3 ||
+            alert.transit.split(" ")[0].length === 4) &&
+          Number(alert.transit.split(" ")[0].slice(0, 3)))
+    )
+    .filter(alert => !alert.alert.includes("Regular"));
 
   const outputAlerts = [...streetcarAlerts, ...subwayAlerts, ...extraAlerts];
 
-  return {alerts, outputAlerts};
+  return { alerts, outputAlerts };
 };

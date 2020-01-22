@@ -75,12 +75,12 @@ const getAlerts = async () => {
 
 const filterAlerts = alerts => {
   //filter out general alerts
-  alerts = alerts.slice(0, -1).filter(alert => alert.split(": ").length === 2);
+  alerts = alerts.slice(0, -1).filter(alert => alert.split(": ").length >= 2); //handles if there are multiple ": " in text
 
   //split alerts into transit, alert, and time
   alerts = alerts.map(alert => {
     const main_components = alert.split(": ");
-    const secondary_components = main_components[1].split(".Last updated ");
+    const secondary_components = main_components.slice(1).join(": ").split(".Last updated "); //handles if there are multiple ": " in text
     return {
       transit: main_components[0],
       alert: secondary_components[0],

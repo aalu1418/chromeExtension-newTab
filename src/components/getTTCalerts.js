@@ -113,7 +113,9 @@ const filterAlerts = alerts => {
     )
     .filter(alert => !alert.alert.includes("Regular"));
 
-  const outputAlerts = [...streetcarAlerts, ...subwayAlerts, ...extraAlerts];
+  //https://codeburst.io/javascript-array-distinct-5edc93501dc4
+  //use distinct values in array
+  const outputAlerts = [...new Set(streetcarAlerts), ...new Set(subwayAlerts), ...new Set(extraAlerts)];
 
   return { alerts, outputAlerts };
 };

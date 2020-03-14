@@ -11,6 +11,6 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "content_security_policy": "script-src 'self' 'sha256-gQhwn1LaqXHh5Jp8petNxYr3321MLnXHn8C0iRxt/c8='; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'sha256-w4THnoMYzI/cxW8WBIPLvRof0ou/Mn9fuPSFMHLKuww='; object-src 'self'",
   "permissions": ["activeTab"]
 }

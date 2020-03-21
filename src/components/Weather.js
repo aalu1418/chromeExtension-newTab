@@ -325,9 +325,9 @@ const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
       <ul style={{ listStyleType: "none", padding: 0 }}>
         <li>TTC alert:</li>
         {transitAlerts.map(alert => (
-          <li key={alert.transit}>
+          <li key={alert}>
             <a href="https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp">
-              {alert.transit}
+              {alert}
             </a>
           </li>
         ))}

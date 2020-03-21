@@ -80,7 +80,10 @@ const filterAlerts = alerts => {
   //split alerts into transit, alert, and time
   alerts = alerts.map(alert => {
     const main_components = alert.split(": ");
-    const secondary_components = main_components.slice(1).join(": ").split(".Last updated "); //handles if there are multiple ": " in text
+    const secondary_components = main_components
+      .slice(1)
+      .join(": ")
+      .split(".Last updated "); //handles if there are multiple ": " in text
     return {
       transit: main_components[0],
       alert: secondary_components[0],
@@ -99,7 +102,11 @@ const filterAlerts = alerts => {
     )
     .filter(alert => !alert.alert.includes("Regular"));
   const subwayAlerts = alerts
-    .filter(alert => alert.transit.split(" ")[0] === "Line")
+    .filter(
+      alert =>
+        alert.transit.split(" ")[0] === "Line" &&
+        alert.transit.split(" ").length > 2
+    )
     .filter(alert => !alert.alert.includes("Regular"));
   const extraAlerts = alerts
     .filter(alert => alert.transit.includes("Attention Customers"))
@@ -115,7 +122,11 @@ const filterAlerts = alerts => {
 
   //https://codeburst.io/javascript-array-distinct-5edc93501dc4
   //use distinct values in array
-  const outputAlerts = [...new Set(streetcarAlerts), ...new Set(subwayAlerts), ...new Set(extraAlerts)];
+  const outputAlerts = [
+    ...new Set(streetcarAlerts),
+    ...new Set(subwayAlerts),
+    ...new Set(extraAlerts)
+  ];
 
   return { alerts, outputAlerts };
 };

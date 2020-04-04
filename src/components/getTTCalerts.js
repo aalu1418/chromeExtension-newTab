@@ -48,6 +48,7 @@
 // };
 
 import cheerio from "cheerio";
+import moment from "moment";
 
 const corsProxy = "https://cors-anywhere.herokuapp.com/";
 
@@ -83,11 +84,11 @@ const filterAlerts = alerts => {
     const secondary_components = main_components
       .slice(1)
       .join(": ")
-      .split(".Last updated "); //handles if there are multiple ": " in text
+      .split("Last updated "); //handles if there are multiple ": " in text
     return {
       transit: main_components[0],
       alert: secondary_components[0],
-      time: secondary_components[1]
+      time: moment(secondary_components[1], ["MMM DD, H:mm A", "H:mm A"]).format("X")
     };
   });
 
@@ -122,9 +123,12 @@ const filterAlerts = alerts => {
 
   const filteredAlerts = [...streetcarAlerts, ...subwayAlerts, ...extraAlerts];
 
+  // remove alerts that are older than 2 days
+  const timeFiltered = filteredAlerts.filter(obj => moment().diff(moment.unix(obj.time), 'days') < 2)
+
   //https://codeburst.io/javascript-array-distinct-5edc93501dc4
   //use distinct values in array
-  const outputAlerts = [...new Set(filteredAlerts.map(alert => alert.transit))];
+  const outputAlerts = [...new Set(timeFiltered.map(alert => alert.transit))];
 
-  return { alerts, filteredAlerts, outputAlerts };
+  return { alerts, filteredAlerts, timeFiltered, outputAlerts };
 };

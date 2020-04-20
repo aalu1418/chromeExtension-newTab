@@ -1,0 +1,8 @@
+.WeatherDisplay {
+  display: flex;
+  max-width: 1000px;
+  min-height: 25vh;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

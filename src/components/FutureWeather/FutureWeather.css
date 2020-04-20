@@ -1,0 +1,22 @@
+.FutureWeather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 125px;
+  /* border: 1pt solid white; */
+  margin: 2rem 0.25rem;
+  border-radius: 10px;
+  padding: 5px 0px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.Weather-Icon {
+  text-align: center;
+  margin: 15px 0px;
+}
+
+.Weather-Icon.Future {
+  font-size: 60px;
+}

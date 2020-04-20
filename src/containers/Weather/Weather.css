@@ -1,0 +1,29 @@
+a {
+  color: inherit;
+}
+
+.Weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Weather-Input {
+  margin: 5px;
+  padding: 5px 20px;
+  font-size: 24pt;
+  background-color: inherit;
+  border: 2px solid white;
+  color: white;
+  border-radius: 30px;
+  font-family: Quicksand;
+}
+
+input.Weather-Input:focus {
+  outline: none;
+}
+
+.Weather-Location {
+  cursor: pointer;
+}

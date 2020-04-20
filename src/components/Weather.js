@@ -73,34 +73,27 @@ const Weather = ({ bgColor, unit }) => {
   //get latitude & longitude on location change
   React.useEffect(() => {
     if (location) {
-      if (process.env.REACT_APP_LOCATION_KEY) {
-        fetch(
-          "https://us1.locationiq.com/v1/search.php?key=" +
-            process.env.REACT_APP_LOCATION_KEY +
-            "&q=" +
-            location +
-            "&format=json&addressdetails=1"
-        )
-          .then(data => data.json())
-          .then(response => {
-            if (!response.error) {
-              const data = {
-                lat: response[0].lat,
-                lon: response[0].lon,
-                ...response[0].address
-              };
-              setLocationData(data);
-              setNewLocation(true);
-              updateLocalStorage({ locationData: data });
-            } else {
-              console.log("LocationIQ error: " + response.error);
-              setLocationData({});
-            }
-          });
-      } else {
-        console.log("No LocationIQ api key present");
-        setLocationData(sampleData.locationData);
-      }
+      fetch(
+        "https://nominatim.openstreetmap.org/search?q=" +
+          location +
+          "&format=json&addressdetails=1"
+      )
+        .then(data => data.json())
+        .then(response => {
+          if (!response.error) {
+            const data = {
+              lat: response[0].lat,
+              lon: response[0].lon,
+              ...response[0].address
+            };
+            setLocationData(data);
+            setNewLocation(true);
+            updateLocalStorage({ locationData: data });
+          } else {
+            console.log("OpenStreetMap Error: " + response.error);
+            setLocationData({});
+          }
+        });
     }
   }, [location]);
 
@@ -241,7 +234,14 @@ const Weather = ({ bgColor, unit }) => {
 };
 
 //component for entire weather forecast
-const WeatherDisplay = ({ current, future, alert, bgColor, location, unit }) => {
+const WeatherDisplay = ({
+  current,
+  future,
+  alert,
+  bgColor,
+  location,
+  unit
+}) => {
   return (
     <div className="WeatherDisplay">
       {current && (
@@ -256,7 +256,11 @@ const WeatherDisplay = ({ current, future, alert, bgColor, location, unit }) => 
       )}
       {future &&
         future.map(day => (
-          <FutureWeather key={moment.unix(day.time).format("dddd")} day={day} unit={unit}/>
+          <FutureWeather
+            key={moment.unix(day.time).format("dddd")}
+            day={day}
+            unit={unit}
+          />
         ))}
     </div>
   );
@@ -269,7 +273,9 @@ const FutureWeather = ({ day, unit }) => {
   const weatherData = [
     <TempDisplay text={moment.unix(day.time).format("dddd")}>
       <span>{tempConvert(day.temperatureHigh, unit)}</span>
-      <span className="Weather-LowTemp">{tempConvert(day.temperatureLow, unit)}</span>
+      <span className="Weather-LowTemp">
+        {tempConvert(day.temperatureLow, unit)}
+      </span>
     </TempDisplay>,
     <DescriptionText text={day.summary} />,
     <PrecipChance data={day} />,
@@ -314,7 +320,7 @@ const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
       <span>{tempConvert(current.apparentTemperature || null, unit)}</span>
     </TempDisplay>,
     <PrecipChance data={current} />,
-    <WindData data={current} unit={unit}/>,
+    <WindData data={current} unit={unit} />,
     <DescriptionText
       text={`Humidity: ${Math.round(current.humidity * 100)}%`}
     />
@@ -338,7 +344,7 @@ const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
 
   if (Object.keys(alert).length !== 0) {
     // console.log(alert.uri);
-    const output = (<a href={alert.uri}>{alert.title}</a>)
+    const output = <a href={alert.uri}>{alert.title}</a>;
     weatherData.splice(1, 0, <DescriptionText text={output} />);
   }
 
@@ -381,9 +387,9 @@ const CurrentWeather = ({ current, alert, day, bgColor, location, unit }) => {
         {transitAlerts.length !== 0 && (
           <div
             className="Weather-Alert Transit"
-            style = {{borderColor: bgColor}}
+            style={{ borderColor: bgColor }}
           >
-            <FontAwesomeIcon icon={faSubway} style={{color: bgColor}}/>
+            <FontAwesomeIcon icon={faSubway} style={{ color: bgColor }} />
           </div>
         )}
       </div>
@@ -442,8 +448,13 @@ const WindData = ({ data, unit }) => {
       />
       {data.windBearing && (
         <span>
-          <div className="Weather-Display-SmallText">{speedConvert(data.windSpeed, unit)}</div>
-          <div className="Weather-Display-SmallText">{`${speedConvert(data.windGust, unit)} (gusts)`}</div>
+          <div className="Weather-Display-SmallText">
+            {speedConvert(data.windSpeed, unit)}
+          </div>
+          <div className="Weather-Display-SmallText">{`${speedConvert(
+            data.windGust,
+            unit
+          )} (gusts)`}</div>
         </span>
       )}
     </span>
@@ -514,18 +525,18 @@ const MoonData = ({ data }) => {
 
 const tempConvert = (temp, unit) => {
   if (unit === "us") {
-    return Math.round(temp*9/5 + 32)
+    return Math.round((temp * 9) / 5 + 32);
   } else {
-    return Math.round(temp)
+    return Math.round(temp);
   }
-}
+};
 
 const speedConvert = (speed, unit) => {
   if (unit === "us") {
-    return `${Math.round(speed*2.23694)} mph`
+    return `${Math.round(speed * 2.23694)} mph`;
   } else {
-    return `${Math.round(speed)} m/s`
+    return `${Math.round(speed)} m/s`;
   }
-}
+};
 
 export default Weather;

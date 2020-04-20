@@ -5,7 +5,6 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { TwitterPicker } from "react-color";
 import "./IconsAndButtons.css";
 import darkSky from "../images/darkskylogo.png";
-import locationIQ from "../images/locationiq-logo.png";
 import catGif from "../images/pusheen.gif";
 import { updateLocalStorage } from "./updateLocalStorage";
 
@@ -110,17 +109,8 @@ const Logos = ({ fontColor }) => {
           }}
         />
       </a>
-      <a href="https://locationiq.com/">
-        <img
-          className="Logos-Icon LocationIQ"
-          src={locationIQ}
-          alt="locationIQ logo"
-          style={{
-            filter: `saturate(0) contrast(100) invert(${
-              fontColor === "black" ? "0" : "100"
-            })`
-          }}
-        />
+      <a href="https://www.openstreetmap.org/copyright">
+        © OpenStreetMap contributors
       </a>
     </div>
   );

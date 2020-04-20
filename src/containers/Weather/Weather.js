@@ -100,7 +100,7 @@ const Weather = ({ bgColor, unit }) => {
     ) {
       //only run getWeather if saved data is too old (only happens on page load)
       const currentTime = moment()
-        .add(-5, "m")
+        .add(-10, "m")
         .unix();
       // console.log(currentWeather.time, currentTime);
       if (currentWeather.time <= currentTime || newLocation) {
@@ -112,7 +112,7 @@ const Weather = ({ bgColor, unit }) => {
       }
       weatherRepeater = setInterval(() => {
         getWeather();
-      }, 1000 * 60 * 5);
+      }, 1000 * 60 * 10);
     }
 
     if (!process.env.REACT_APP_WEATHER_KEY) {

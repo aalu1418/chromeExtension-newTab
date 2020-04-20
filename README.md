@@ -6,7 +6,7 @@ A small personal project to create a Google Chrome extension for a new tab page 
 ---
 ### Powered by:
 Weather: [Dark Sky](https://darksky.net/poweredby/)  
-Geocoding: [LocationIQ](https://locationiq.com/)  
+Geocoding: [OpenStreetMap](https://openstreetmap.org/)  
 Time: [Moment JS](https://momentjs.com/)  
 React: [React JS](https://reactjs.org/)  
 Icons: [Weather Icons](https://www.npmjs.com/package/weather-icons) & [Font Awesome](https://fontawesome.com/)  
@@ -43,10 +43,9 @@ Added features:
 ---
 ### Installation Instructions:
 
-Note: The original purpose of this project was to customize a home screen - not for large scale deployment/distribution. Please use the various APIs according to policies specified by LocationIQ and DarkSky. The purpose of this document is to simply relay how to deploy this extension on a personal platform.
+Note: The original purpose of this project was to customize a home screen - not for large scale deployment/distribution. Please use the various APIs according to policies specified by DarkSky. The purpose of this document is to simply relay how to deploy this extension on a personal platform.
 
 Needed (API keys):
-- [LocationIQ](https://locationiq.com/register)
 - [DarkSky](https://darksky.net/dev/register)
 
 Instructions:
@@ -55,7 +54,6 @@ Instructions:
 1. Navigate to the `chromeExtension-newTab` folder and run `npm install`
 1. Create a `.env` file in the same folder as the `package.json` file. It should include:
   ```
-  REACT_APP_LOCATION_KEY= <your-location-key-here>
   REACT_APP_WEATHER_KEY= <your-weather-key-here>
   ```
 1. Run `npm run build`

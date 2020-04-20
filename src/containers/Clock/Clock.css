@@ -33,3 +33,53 @@
 .Clock-Date {
   margin-bottom: 10pt;
 }
+
+.analogClock {
+  width: 17.5rem;
+  height: 17.5rem;
+  background-color: none;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analogClock-center {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.analogClock-tick {
+  height: 0.5rem;
+  border: 0.5px solid white;
+  position: fixed;
+  transform-origin: 0 8.75rem;
+}
+
+.analogClock-hour {
+  height: 2rem;
+  border: 0.75px solid white;
+  background-color: white;
+  position: fixed;
+  transform-origin: bottom;
+}
+
+.analogClock-minute {
+  height: 7rem;
+  border: 0.75px solid white;
+  background-color: white;
+  position: fixed;
+  transform-origin: bottom;
+}
+
+.analogClock-second {
+  height: 6rem;
+  border: 0.5px solid white;
+  background-color: white;
+  position: fixed;
+  transform-origin: bottom;
+}

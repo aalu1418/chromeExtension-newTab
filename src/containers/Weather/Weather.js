@@ -27,6 +27,7 @@ const Weather = ({ bgColor, unit }) => {
     readLocalStorage("alertData") || {}
   );
   const [activeInput, setActiveInput] = React.useState(!locationData);
+  const [maxDays, setMaxDays] = React.useState(6);
 
   //get latitude & longitude on location change
   React.useEffect(() => {
@@ -134,6 +135,23 @@ const Weather = ({ bgColor, unit }) => {
     }
   };
 
+  //window size listener
+  React.useEffect(() => {
+    function handleResize() {
+      console.log(window.innerWidth);
+      if (window.innerWidth > 950) {
+        setMaxDays(6);
+      } else {
+        setMaxDays(Math.floor(window.innerWidth/950*7)-1)
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return _ => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   //location display logic
   const neighbourhood =
     Object.keys(locationData).length !== 0 ? locationData.neighbourhood : null;
@@ -176,7 +194,7 @@ const Weather = ({ bgColor, unit }) => {
           {futureWeather.length !== 0 ? (
             <WeatherDisplay
               current={currentWeather}
-              future={futureWeather}
+              future={futureWeather.slice(0, maxDays)}
               alert={alertWeather}
               bgColor={bgColor}
               location={locationData}

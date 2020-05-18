@@ -4,15 +4,14 @@ import { faCog, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { TwitterPicker } from "react-color";
 import "./IconsAndButtons.css";
-import darkSky from "../images/darkskylogo.png";
-import locationIQ from "../images/locationiq-logo.png";
-import catGif from "../images/pusheen.gif";
-import { updateLocalStorage } from "./updateLocalStorage";
+import darkSky from "../../images/darkskylogo.png";
+// import catGif from "../../images/pusheen.gif";
+import { updateLocalStorage } from "../../scripts/updateLocalStorage";
 
 const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
   const menuStyle = openSettings
-    ? { border: "2px solid", backgroundColor: color, height: "13rem" }
+    ? { border: "2px solid", backgroundColor: color }
     : {};
 
   const unitOnClick = event => {
@@ -68,7 +67,6 @@ const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
             </div>
           </div>
         )}
-        {openSettings && <CatGif state={openSettings} />}
       </div>
     </div>
   );
@@ -110,26 +108,9 @@ const Logos = ({ fontColor }) => {
           }}
         />
       </a>
-      <a href="https://locationiq.com/">
-        <img
-          className="Logos-Icon LocationIQ"
-          src={locationIQ}
-          alt="locationIQ logo"
-          style={{
-            filter: `saturate(0) contrast(100) invert(${
-              fontColor === "black" ? "0" : "100"
-            })`
-          }}
-        />
+      <a href="https://www.openstreetmap.org/copyright">
+        © OpenStreetMap contributors
       </a>
-    </div>
-  );
-};
-
-const CatGif = () => {
-  return (
-    <div className="CatGif">
-      <img src={catGif} alt="cat-gif" />
     </div>
   );
 };

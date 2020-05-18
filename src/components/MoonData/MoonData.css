@@ -1,0 +1,11 @@
+.Weather-TempDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Weather-Display-SmallText {
+  margin: 10px 0px;
+  font-size: 14pt;
+}

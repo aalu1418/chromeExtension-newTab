@@ -9,6 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "cheerio": "^1.0.0-rc.3",
     "color": "^3.1.2",
+    "gh-pages": "^2.2.0",
     "moment": "^2.24.0",
     "react": "^16.12.0",
     "react-color": "^2.17.3",
@@ -21,6 +22,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "postbuild": "react-snap",
+    "deploy": "now",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

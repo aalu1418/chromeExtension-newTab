@@ -1,10 +1,10 @@
 import React from "react";
 import Color from "color";
-import Clock from "./components/Clock";
-import Weather from "./components/Weather";
-import IconsAndButtons from "./components/IconsAndButtons";
+import Clock from "./containers/Clock/Clock";
+import Weather from "./containers/Weather/Weather";
+import IconsAndButtons from "./containers/IconsAndButtons/IconsAndButtons";
 import "./App.css";
-import { readLocalStorage } from "./components/updateLocalStorage";
+import { readLocalStorage } from "./scripts/updateLocalStorage";
 
 const App = () => {
   const [backgroundColor, setBackgroundColor] = React.useState();

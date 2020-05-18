@@ -1,0 +1,60 @@
+.Weather-Display-SmallText {
+  margin: 10px 0px;
+  font-size: 14pt;
+}
+
+.CurrentWeather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 165px;
+  /* border: 1pt solid white; */
+  font-size: 36px;
+  margin: 2rem 0rem;
+  border-radius: 10px;
+  padding: 5px 0px;
+  cursor: pointer;
+}
+
+.Weather-Icon.Current {
+  font-size: 80px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Weather-Icon {
+  text-align: center;
+  margin: 15px 0px;
+}
+
+.Weather-Alert {
+  position: absolute;
+  z-index: 1;
+  background-color: inherit;
+  border-radius: 50%;
+  padding: 2px;
+  color: #b71c1c;
+}
+
+.Weather-Alert.Weather {
+  font-size: 25pt;
+  left: -5px;
+  top: -15px;
+}
+
+.Weather-Alert.Transit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #b71c1c;
+  font-size: 16pt;
+  border: 2pt solid;
+  padding: 0.35rem;
+  left: 90px;
+  top: -15px;
+  min-width: 20px;
+  min-height: 20px;
+}

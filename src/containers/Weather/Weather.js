@@ -138,7 +138,7 @@ const Weather = ({ bgColor, unit }) => {
   //window size listener
   React.useEffect(() => {
     function handleResize() {
-      console.log(window.innerWidth);
+      // console.log(window.innerWidth);
       if (window.innerWidth > 950) {
         setMaxDays(6);
       } else {

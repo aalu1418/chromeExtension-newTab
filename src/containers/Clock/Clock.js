@@ -8,7 +8,7 @@ const Clock = ({ screenState }) => {
   const [date, setDate] = React.useState("");
   const [scale, setScale] = React.useState(1);
   const [clockWidth, setClockWidth] = React.useState(0);
-  const [analogDisplay, setAnalogDisplay] = React.useState({ display: "none" });
+  // const [analogDisplay, setAnalogDisplay] = React.useState({ display: "none" });
   const [digitalDisplay, setDigitalDisplay] = React.useState({});
 
   //set clock & update every second
@@ -48,28 +48,46 @@ const Clock = ({ screenState }) => {
     return () => window.removeEventListener("resize", newWidthChange);
   }, [clockWidth]);
 
+  // //window size listener
+  // React.useEffect(() => {
+  //   function handleResize() {
+  //     const hide = { display: "none" };
+  //     console.log(window.innerWidth);
+  //     if (window.innerWidth <= 900) {
+  //       console.log("small");
+  //       setAnalogDisplay({});
+  //       setDigitalDisplay(hide);
+  //     } else if (window.innerWidth > 900) {
+  //       console.log("large");
+  //       setAnalogDisplay(hide);
+  //       setDigitalDisplay({});
+  //     }
+  //   }
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
+
+  // React.useEffect(() => {
+  //   console.log(analogDisplay, digitalDisplay);
+  // }, [analogDisplay, digitalDisplay]);
+
   //window size listener
   React.useEffect(() => {
     function handleResize() {
-      const hide = { display: "none" };
-      // console.log(window.innerWidth);
-      if (window.innerWidth <= 900) {
-        setAnalogDisplay({});
-        setDigitalDisplay(hide);
-      } else if (window.innerWidth > 900) {
-        setAnalogDisplay(hide);
-        setDigitalDisplay({});
-      }
+      // console.log(window.innerWidth / 900);
+      setDigitalDisplay({
+        transform: `scale(${Math.min(window.innerWidth / 900, 1)})`
+      });
     }
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  // React.useEffect(() => {
-  //   console.log(analogDisplay, digitalDisplay);
-  // }, [analogDisplay, digitalDisplay]);
 
   const analogTicks = [];
   for (let ii = 0; ii < 12; ii++) {
@@ -89,7 +107,7 @@ const Clock = ({ screenState }) => {
       ref={clockSizeRef}
       style={screenState.screen ? { transform: `scale(${scale})` } : {}}
     >
-      <div className="analogClock" style={analogDisplay}>
+      {/* <div className="analogClock" style={analogDisplay}>
         <div className="analogClock-center"></div>
         {analogTicks}
         <div
@@ -110,7 +128,7 @@ const Clock = ({ screenState }) => {
             transform: `translateY(-3rem) rotate(${(time[2] / 60) * 360}deg)`
           }}
         ></div>
-      </div>
+      </div> */}
       <div className="Clock-Time" style={digitalDisplay}>
         <div key={`clock-hour`} className="Clock-Digits">
           {time[0].split("").map((digit, ind) => {

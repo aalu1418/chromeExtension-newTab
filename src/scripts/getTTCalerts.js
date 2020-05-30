@@ -106,7 +106,7 @@ const filterAlerts = alerts => {
     .filter(
       alert =>
         alert.transit.split(" ")[0] === "Line" &&
-        alert.transit.split(" ").length > 2
+        alert.transit.split(" ").length >= 2
     )
     .filter(alert => !alert.alert.includes("Regular"));
   const extraAlerts = alerts

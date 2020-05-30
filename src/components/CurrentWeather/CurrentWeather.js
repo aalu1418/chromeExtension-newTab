@@ -66,7 +66,7 @@ export const CurrentWeather = ({
   React.useEffect(() => {
     let transitRepeater = null;
     const getTransitAlerts = async () => {
-      if (location.city === "Toronto") {
+      if (location.city.includes("Toronto") && location.state.includes("Ontario")) {
         const alerts = await ttcAlerts();
         setTransitAlerts(alerts.outputAlerts);
         console.log(alerts);
@@ -75,7 +75,7 @@ export const CurrentWeather = ({
     getTransitAlerts();
     transitRepeater = setInterval(() => getTransitAlerts(), 1000 * 60 * 5);
     return () => clearInterval(transitRepeater);
-  }, [location.city]);
+  }, [location.city, location.state]);
 
   return (
     <div

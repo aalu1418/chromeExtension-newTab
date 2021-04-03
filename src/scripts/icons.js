@@ -1,39 +1,27 @@
 //weather icons
-export const weatherIcons = {
-  "clear-day": "wi-day-sunny",
-  "clear-night": "wi-night-clear",
-  rain: "wi-rain",
-  snow: "wi-snow",
-  sleet: "wi-sleet",
-  wind: "wi-strong-wind",
-  fog: "wi-fog",
-  cloudy: "wi-cloudy",
-  "partly-cloudy-day": "wi-day-sunny-overcast",
-  "partly-cloudy-night": "wi-night-alt-cloudy",
-  hail: "wi-hail",
-  thunderstorm: "wi-thunderstorm",
-  tornado: "wi-tornado",
-  windDirection: "wi-wind-default"
+import clear from "../images/icons/01d@2x.png";
+import fewClouds from "../images/icons/02d@2x.png";
+import scatClouds from "../images/icons/03d@2x.png";
+import brokClouds from "../images/icons/04d@2x.png";
+import showerRain from "../images/icons/09d@2x.png";
+import rain from "../images/icons/10d@2x.png";
+import thunderstorm from "../images/icons/11d@2x.png";
+import snow from "../images/icons/13d@2x.png";
+import mist from "../images/icons/50d@2x.png";
+
+const mapping = {
+  "01": clear,
+  "02": fewClouds,
+  "03": scatClouds,
+  "04": brokClouds,
+  "09": showerRain,
+  "10": rain,
+  "11": thunderstorm,
+  "13": snow,
+  "50": mist,
 };
 
-//algorithm to pick icons based on time & precipitation time
-export const weatherIconPicker = (icon, time, sunrise, sunset) => {
-  const modifiableWeather = [
-    "rain",
-    "snow",
-    "sleet",
-    "cloudy",
-    "hail",
-    "thunderstorm"
-  ];
-  if (!modifiableWeather.includes(icon) || !time) {
-    return weatherIcons[icon];
-  } else {
-    const stringArray = weatherIcons[icon].split("-");
-    const dayTime = time > sunrise && time < sunset;
-    const timeModifier = dayTime ? "day" : "night-alt";
-    stringArray.splice(1, 0, timeModifier);
-    // console.log(dayTime, stringArray.join("-"));
-    return stringArray.join("-");
-  }
-};
+//return the proper image based on code
+export const weatherIconPicker = id => {
+  return mapping[id.slice(0,2)]
+}

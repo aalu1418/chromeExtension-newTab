@@ -32,14 +32,10 @@ export const FutureWeather = ({ day, unit }) => {
       onClick={() => setIndex((index + 1) % weatherData.length)}
     >
       <div className="Weather-Icon Future">
-        <i
-          className={`wi ${weatherIconPicker(
-            day.icon,
-            day.precipIntensityMaxTime || false,
-            day.sunriseTime,
-            day.sunsetTime
-          )}`}
-        ></i>
+        <img
+          src={weatherIconPicker(day.weather[0].icon)}
+          alt={"icon-"+day.weather[0].icon}
+        />
       </div>
       <div style={{ height: "60px" }}>{weatherData[index]}</div>
     </div>

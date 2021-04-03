@@ -9,7 +9,7 @@ Weather: [Open Weather Map](https://openweathermap.org)
 Geocoding: [OpenStreetMap](https://openstreetmap.org/)  
 Time: [Moment JS](https://momentjs.com/)  
 React: [React JS](https://reactjs.org/)  
-Icons: [Weather Icons](https://www.npmjs.com/package/weather-icons) & [Font Awesome](https://fontawesome.com/)  
+Icons: [Open Weather Map](https://openweathermap.org/weather-conditions) & [Font Awesome](https://fontawesome.com/)  
 Hosting: [Zeit](https://zeit.co/) - does not support ```postbuild: react-snap``` (need to remove before pushing to Zeit)
 
 ---

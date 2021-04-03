@@ -9,9 +9,9 @@ import { weatherIconPicker } from "../../scripts/icons.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationCircle,
-  faSubway
+  faSubway,
 } from "@fortawesome/free-solid-svg-icons";
-import "./CurrentWeather.css"
+import "./CurrentWeather.css";
 
 //component for current weather + associated data
 export const CurrentWeather = ({
@@ -20,7 +20,7 @@ export const CurrentWeather = ({
   day,
   bgColor,
   location,
-  unit
+  unit,
 }) => {
   const [index, setIndex] = React.useState(0);
   const [transitAlerts, setTransitAlerts] = React.useState([]);
@@ -30,22 +30,25 @@ export const CurrentWeather = ({
     <TempDisplay text="Now">
       <span>{tempConvert(current.temp || null, unit)}</span>
     </TempDisplay>,
-    <DescriptionText text={current.weather[0].description[0].toUpperCase()+current.weather[0].description.slice(1)} />,
+    <DescriptionText
+      text={
+        current.weather[0].description[0].toUpperCase() +
+        current.weather[0].description.slice(1)
+      }
+    />,
     <TempDisplay text="Feels like" textClass="Weather-Display-SmallText">
       <span>{tempConvert(current.feels_like || null, unit)}</span>
     </TempDisplay>,
     <PrecipChance data={current} />,
     <WindData data={current} unit={unit} />,
-    <DescriptionText
-      text={`Humidity: ${Math.round(current.humidity)}%`}
-    />
+    <DescriptionText text={`Humidity: ${Math.round(current.humidity)}%`} />,
   ];
 
   if (transitAlerts.length !== 0) {
     const multiLine = (
       <ul style={{ listStyleType: "none", padding: 0 }}>
         <li>TTC alert:</li>
-        {transitAlerts.map(alert => (
+        {transitAlerts.map((alert) => (
           <li key={alert}>
             <a href="https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp">
               {alert}
@@ -66,7 +69,10 @@ export const CurrentWeather = ({
   React.useEffect(() => {
     let transitRepeater = null;
     const getTransitAlerts = async () => {
-      if (location.city.includes("Toronto") && location.state.includes("Ontario")) {
+      if (
+        location.city.includes("Toronto") &&
+        location.state.includes("Ontario")
+      ) {
         const alerts = await ttcAlerts();
         setTransitAlerts(alerts.outputAlerts);
         console.log(alerts);
@@ -84,14 +90,11 @@ export const CurrentWeather = ({
       onMouseLeave={() => setIndex(0)}
     >
       <div className="Weather-Icon Current">
-        <i
-          className={`wi ${weatherIconPicker(
-            current.icon,
-            current.time,
-            day.sunriseTime,
-            day.sunsetTime
-          )}`}
-        ></i>
+        <img
+          src={weatherIconPicker(current.weather[0].icon)}
+          alt="weather-icon-current"
+        />
+
         {Object.keys(alert).length !== 0 && (
           <FontAwesomeIcon
             className="Weather-Alert Weather"

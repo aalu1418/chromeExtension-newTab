@@ -2,7 +2,6 @@ import React from "react";
 import moment from "moment";
 import LoadingAnimation from "../../components/LoadingAnimation/LoadingAnimation";
 import "./Weather.css";
-import "../../../node_modules/weather-icons/css/weather-icons.css";
 import {
   updateLocalStorage,
   readLocalStorage,

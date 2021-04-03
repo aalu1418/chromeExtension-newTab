@@ -6,7 +6,6 @@ import {
   updateLocalStorage,
   readLocalStorage,
 } from "../../scripts/updateLocalStorage";
-import { sampleData } from "../../scripts/sampleData";
 import { WeatherDisplay } from "../../components/WeatherDisplay/WeatherDisplay";
 
 //component for all weather data + inputting location
@@ -27,6 +26,7 @@ const Weather = ({ bgColor, unit }) => {
   );
   const [activeInput, setActiveInput] = React.useState(!locationData);
   const [maxDays, setMaxDays] = React.useState(6);
+  const [apiMissing, setApiMissing] = React.useState(false);
 
   //get latitude & longitude on location change
   React.useEffect(() => {
@@ -58,6 +58,8 @@ const Weather = ({ bgColor, unit }) => {
   //get location information & weather on locationData change
   React.useEffect(() => {
     let weatherRepeater = null;
+    setApiMissing(false);
+
     const getWeather = () => {
       const url =
         "https://api.openweathermap.org/data/2.5/onecall?" +
@@ -113,8 +115,7 @@ const Weather = ({ bgColor, unit }) => {
 
     if (!process.env.REACT_APP_WEATHER_KEY) {
       console.log("No Open Weather Map API key present");
-      setCurrentWeather(sampleData.currentlyData);
-      setFutureWeather(sampleData.dailyData);
+      setApiMissing(true)
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);
@@ -200,6 +201,7 @@ const Weather = ({ bgColor, unit }) => {
           )}
         </span>
       )}
+      {apiMissing && <div>API key not available</div>}
     </div>
   );
 };

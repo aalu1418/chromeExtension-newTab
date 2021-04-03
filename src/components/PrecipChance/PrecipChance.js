@@ -4,18 +4,20 @@ import "./PrecipChance.css";
 
 //component for precipitation chance data
 export const PrecipChance = ({ data }) => {
+  let precipType = (data.rain || 0) > (data.snow || 0) ? "rain" : "snow";
+
   const icon = data.precipType
     ? weatherIconPicker(data.precipType, null, "", "")
     : "wi-cloud";
   return (
     <span className="Weather-TempDisplay">
       <i className={`wi ${icon}`} />
-      {icon !== "wi-cloud" && (
+      {(data.rain > 0 || data.snow > 0) && (
         <div className="Weather-Display-SmallText">
-          {Math.round(data.precipProbability * 100) + "% of " + data.precipType}
+          {Math.round(Number(data.pop) * 100) + "% of " + precipType}
         </div>
       )}
-      {icon === "wi-cloud" && (
+      {(!data.rain && !data.snow) && (
         <div className="Weather-Display-SmallText">{"0% of precipation"}</div>
       )}
     </span>

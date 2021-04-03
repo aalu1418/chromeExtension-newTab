@@ -1,11 +1,11 @@
 # Chrome Extension: New Page + Time + Weather + TTC updates
 A small personal project to create a Google Chrome extension for a new tab page with time/date, weather powered by Dark Sky, and TTC (Toronto Transit) alerts
 
-[![forthebadge](https://forthebadge.com/images/badges/contains-cat-gifs.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/designed-in-etch-a-sketch.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-css.svg)](https://forthebadge.com)
 ---
 ### Powered by:
-Weather: [Dark Sky](https://darksky.net/poweredby/)  
+Weather: [Open Weather Map](https://openweathermap.org)  
 Geocoding: [OpenStreetMap](https://openstreetmap.org/)  
 Time: [Moment JS](https://momentjs.com/)  
 React: [React JS](https://reactjs.org/)  

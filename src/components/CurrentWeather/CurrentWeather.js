@@ -28,16 +28,16 @@ export const CurrentWeather = ({
 
   const weatherData = [
     <TempDisplay text="Now">
-      <span>{tempConvert(current.temperature || null, unit)}</span>
+      <span>{tempConvert(current.temp || null, unit)}</span>
     </TempDisplay>,
-    <DescriptionText text={current.summary} />,
+    <DescriptionText text={current.weather[0].description[0].toUpperCase()+current.weather[0].description.slice(1)} />,
     <TempDisplay text="Feels like" textClass="Weather-Display-SmallText">
-      <span>{tempConvert(current.apparentTemperature || null, unit)}</span>
+      <span>{tempConvert(current.feels_like || null, unit)}</span>
     </TempDisplay>,
     <PrecipChance data={current} />,
     <WindData data={current} unit={unit} />,
     <DescriptionText
-      text={`Humidity: ${Math.round(current.humidity * 100)}%`}
+      text={`Humidity: ${Math.round(current.humidity)}%`}
     />
   ];
 

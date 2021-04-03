@@ -4,8 +4,7 @@ import { faCog, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { TwitterPicker } from "react-color";
 import "./IconsAndButtons.css";
-import darkSky from "../../images/darkskylogo.png";
-// import catGif from "../../images/pusheen.gif";
+import owm from "../../images/owm.png";
 import { updateLocalStorage } from "../../scripts/updateLocalStorage";
 
 const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
@@ -96,16 +95,11 @@ const Logos = ({ fontColor }) => {
           icon={faGithub}
         />
       </a>
-      <a href="https://darksky.net/poweredby/">
+      <a href="https://openweathermap.org">
         <img
           className="Logos-Icon"
-          src={darkSky}
-          alt="dark sky logo"
-          style={{
-            filter: `saturate(0) contrast(100) invert(${
-              fontColor === "black" ? "0" : "100"
-            })`
-          }}
+          src={owm}
+          alt="owm logo"
         />
       </a>
       <a href="https://www.openstreetmap.org/copyright">

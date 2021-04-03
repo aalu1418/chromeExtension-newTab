@@ -6,7 +6,6 @@ import { DescriptionText } from "../DescriptionText/DescriptionText";
 import { weatherIconPicker } from "../../scripts/icons.js";
 import { PrecipChance } from "../PrecipChance/PrecipChance";
 import { WindData } from "../WindData/WindData";
-import { MoonData } from "../MoonData/MoonData";
 import "./FutureWeather.css";
 
 //component for single day future weather
@@ -14,17 +13,16 @@ export const FutureWeather = ({ day, unit }) => {
   const [index, setIndex] = React.useState(0);
 
   const weatherData = [
-    <TempDisplay text={moment.unix(day.time).format("dddd")}>
-      <span>{tempConvert(day.temperatureHigh, unit)}</span>
+    <TempDisplay text={moment.unix(day.dt).format("dddd")}>
+      <span>{tempConvert(day.temp.day, unit)}</span>
       <span className="Weather-LowTemp">
-        {tempConvert(day.temperatureLow, unit)}
+        {tempConvert(day.temp.night, unit)}
       </span>
     </TempDisplay>,
-    <DescriptionText text={day.summary} />,
+    <DescriptionText text={day.weather[0].description[0].toUpperCase()+day.weather[0].description.slice(1)} />,
     <PrecipChance data={day} />,
     <WindData data={day} unit={unit} />,
-    <MoonData data={day} />,
-    <DescriptionText text={`Humidity: ${Math.round(day.humidity * 100)}%`} />
+    <DescriptionText text={`Humidity: ${Math.round(day.humidity)}%`} />
   ];
 
   return (

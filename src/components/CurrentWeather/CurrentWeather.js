@@ -18,7 +18,6 @@ export const CurrentWeather = ({
   current,
   alert,
   day,
-  bgColor,
   location,
   unit,
 }) => {
@@ -99,15 +98,15 @@ export const CurrentWeather = ({
           <FontAwesomeIcon
             className="Weather-Alert Weather"
             icon={faExclamationCircle}
-            style={{ backgroundColor: bgColor }}
+            style={{ backgroundColor: "black" }}
           ></FontAwesomeIcon>
         )}
         {transitAlerts.length !== 0 && (
           <div
             className="Weather-Alert Transit"
-            style={{ borderColor: bgColor }}
+            style={{ borderColor: "black" }}
           >
-            <FontAwesomeIcon icon={faSubway} style={{ color: bgColor }} />
+            <FontAwesomeIcon icon={faSubway} style={{ color: "black" }} />
           </div>
         )}
       </div>

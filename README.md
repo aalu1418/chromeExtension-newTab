@@ -10,15 +10,10 @@ Geocoding: [OpenStreetMap](https://openstreetmap.org/)
 Time: [Moment JS](https://momentjs.com/)  
 React: [React JS](https://reactjs.org/)  
 Icons: [Open Weather Map](https://openweathermap.org/weather-conditions) & [Font Awesome](https://fontawesome.com/)  
-Hosting: [Zeit](https://zeit.co/) - does not support ```postbuild: react-snap``` (need to remove before pushing to Zeit)
 
 ---
 ### Application Views:
-Demo: [Hosted on Zeit](https://chromeextension-newtab.aalu1418.now.sh/) - defaults to random day in Toronto (does not use API keys)
-
 ![](./screenshot0.png)
-
-![](./screenshot1.png)
 
 ---
 ### Functionality:

@@ -35,10 +35,10 @@ Added features:
 ---
 ### Installation Instructions:
 
-Note: The original purpose of this project was to customize a home screen - not for large scale deployment/distribution. Please use the various APIs according to policies specified by DarkSky. The purpose of this document is to simply relay how to deploy this extension on a personal platform.
+Note: The original purpose of this project was to customize a home screen - not for large scale deployment/distribution. Please use the various APIs according to policies specified by Open Weather Map. The purpose of this document is to simply relay how to deploy this extension on a personal platform.
 
 Needed (API keys):
-- [DarkSky](https://darksky.net/dev/register)
+- [Open Weather Map](https://openweathermap.org)
 
 Instructions:
 

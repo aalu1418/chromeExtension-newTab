@@ -2,19 +2,17 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { TwitterPicker } from "react-color";
 import "./IconsAndButtons.css";
-import darkSky from "../../images/darkskylogo.png";
-// import catGif from "../../images/pusheen.gif";
+import owm from "../../images/owm.png";
 import { updateLocalStorage } from "../../scripts/updateLocalStorage";
 
-const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
+const IconsAndButtons = ({ unit }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
   const menuStyle = openSettings
-    ? { border: "2px solid", backgroundColor: color }
+    ? { border: "2px solid", backgroundColor: "black" }
     : {};
 
-  const unitOnClick = event => {
+  const unitOnClick = (event) => {
     unit.setUnit(event.target.id);
     updateLocalStorage({ unit: event.target.id });
   };
@@ -23,7 +21,7 @@ const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
     <div
       id="Frame"
       className={openSettings ? "Frame" : ""}
-      onClick={event => {
+      onClick={(event) => {
         if (event.target.id === "Frame") {
           setOpenSettings(false);
         }
@@ -34,37 +32,27 @@ const IconsAndButtons = ({ color, setColor, fontColor, unit }) => {
           state={openSettings}
           onClick={() => setOpenSettings(!openSettings)}
         />
-        {openSettings && <Logos state={openSettings} fontColor={fontColor} />}
+        {openSettings && <Logos state={openSettings} />}
         {openSettings && (
-          <div className="IconsAndButtons-ColorPicker">
-            <TwitterPicker
-              triangle="hide"
-              color={color}
-              onChange={(color, event) => {
-                updateLocalStorage({ color: color.hex });
-                setColor(color.hex);
-              }}
-            />
-            <div className="IconsAndButtons-UnitToggle">
-              <button
-                className={`UnitToggle-Button ${
-                  unit.unit === "si" ? "Selected" : ""
-                }`}
-                id="si"
-                onClick={unitOnClick}
-              >
-                Metric
-              </button>
-              <button
-                className={`UnitToggle-Button ${
-                  unit.unit === "us" ? "Selected" : ""
-                }`}
-                id="us"
-                onClick={unitOnClick}
-              >
-                Imperial
-              </button>
-            </div>
+          <div className="IconsAndButtons-UnitToggle">
+            <button
+              className={`UnitToggle-Button ${
+                unit.unit === "si" ? "Selected" : ""
+              }`}
+              id="si"
+              onClick={unitOnClick}
+            >
+              Metric
+            </button>
+            <button
+              className={`UnitToggle-Button ${
+                unit.unit === "us" ? "Selected" : ""
+              }`}
+              id="us"
+              onClick={unitOnClick}
+            >
+              Imperial
+            </button>
           </div>
         )}
       </div>
@@ -86,27 +74,18 @@ const Settings = ({ state, onClick }) => {
   );
 };
 
-const Logos = ({ fontColor }) => {
+const Logos = () => {
   return (
     <div className="Logos">
       <a href="https://github.com/aalu1418/chromeExtension-newTab">
         <FontAwesomeIcon
           className="Logos-Icon"
-          style={{ color: fontColor }}
+          style={{ color: "white" }}
           icon={faGithub}
         />
       </a>
-      <a href="https://darksky.net/poweredby/">
-        <img
-          className="Logos-Icon"
-          src={darkSky}
-          alt="dark sky logo"
-          style={{
-            filter: `saturate(0) contrast(100) invert(${
-              fontColor === "black" ? "0" : "100"
-            })`
-          }}
-        />
+      <a href="https://openweathermap.org">
+        <img className="Logos-Icon" src={owm} alt="owm logo" />
       </a>
       <a href="https://www.openstreetmap.org/copyright">
         © OpenStreetMap contributors

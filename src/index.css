@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
+
+html {
+  background-color: black;
+}
 
 body {
   margin: 0;

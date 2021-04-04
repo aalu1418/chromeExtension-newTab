@@ -28,7 +28,7 @@ export const WeatherDisplay = ({
       {future &&
         future.map(day => (
           <FutureWeather
-            key={moment.unix(day.time).format("dddd")}
+            key={moment.unix(day.dt).format("dddd")}
             day={day}
             unit={unit}
           />

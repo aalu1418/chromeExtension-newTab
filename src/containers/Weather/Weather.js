@@ -2,16 +2,14 @@ import React from "react";
 import moment from "moment";
 import LoadingAnimation from "../../components/LoadingAnimation/LoadingAnimation";
 import "./Weather.css";
-import "../../../node_modules/weather-icons/css/weather-icons.css";
 import {
   updateLocalStorage,
-  readLocalStorage
+  readLocalStorage,
 } from "../../scripts/updateLocalStorage";
-import { sampleData } from "../../scripts/sampleData";
 import { WeatherDisplay } from "../../components/WeatherDisplay/WeatherDisplay";
 
 //component for all weather data + inputting location
-const Weather = ({ bgColor, unit }) => {
+const Weather = ({ unit }) => {
   const [location, setLocation] = React.useState(null);
   const [newLocation, setNewLocation] = React.useState(false);
   const [locationData, setLocationData] = React.useState(
@@ -28,6 +26,7 @@ const Weather = ({ bgColor, unit }) => {
   );
   const [activeInput, setActiveInput] = React.useState(!locationData);
   const [maxDays, setMaxDays] = React.useState(6);
+  const [apiMissing, setApiMissing] = React.useState(false);
 
   //get latitude & longitude on location change
   React.useEffect(() => {
@@ -37,13 +36,13 @@ const Weather = ({ bgColor, unit }) => {
           location +
           "&format=json&addressdetails=1"
       )
-        .then(data => data.json())
-        .then(response => {
+        .then((data) => data.json())
+        .then((response) => {
           if (!response.error) {
             const data = {
               lat: response[0].lat,
               lon: response[0].lon,
-              ...response[0].address
+              ...response[0].address,
             };
             setLocationData(data);
             setNewLocation(true);
@@ -58,29 +57,29 @@ const Weather = ({ bgColor, unit }) => {
 
   //get location information & weather on locationData change
   React.useEffect(() => {
-    //https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors
-    //using a cors proxy
     let weatherRepeater = null;
+    setApiMissing(false);
+
     const getWeather = () => {
-      console.log("getWeather called");
       const url =
-        "https://cors-anywhere.herokuapp.com/" +
-        "https://api.darksky.net/forecast/" +
-        process.env.REACT_APP_WEATHER_KEY +
-        "/" +
+        "https://api.openweathermap.org/data/2.5/onecall?" +
+        "lat=" +
         locationData.lat +
-        "," +
+        "&lon=" +
         locationData.lon +
-        "?units=si&exclude=minutely,hourly,flags";
+        "&appid=" +
+        process.env.REACT_APP_WEATHER_KEY +
+        "&units=metric&exclude=minutely,hourly";
       fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          setCurrentWeather(data.currently);
-          setFutureWeather(data.daily.data.slice(0, 6));
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setCurrentWeather(data.current);
+          setFutureWeather(data.daily.slice(0, 6));
           let storagePayload = {
-            currentlyData: data.currently,
-            dailyData: data.daily.data.slice(0, 6),
-            alertData: {}
+            currentlyData: data.current,
+            dailyData: data.daily.slice(0, 6),
+            alertData: {},
           };
           if (data.alerts) {
             // console.log(data.alerts);
@@ -90,8 +89,7 @@ const Weather = ({ bgColor, unit }) => {
             setAlertWeather({});
           }
           updateLocalStorage(storagePayload);
-          document.title =
-            Math.round(data.currently.temperature) + "\xB0 | New Tab";
+          document.title = Math.round(data.current.temp) + "\xB0 | New Tab";
         });
     };
 
@@ -100,16 +98,13 @@ const Weather = ({ bgColor, unit }) => {
       process.env.REACT_APP_WEATHER_KEY
     ) {
       //only run getWeather if saved data is too old (only happens on page load)
-      const currentTime = moment()
-        .add(-10, "m")
-        .unix();
+      const currentTime = moment().add(-10, "m").unix();
       // console.log(currentWeather.time, currentTime);
       if (currentWeather.time <= currentTime || newLocation) {
         getWeather();
         setNewLocation(false);
       } else {
-        document.title =
-          Math.round(currentWeather.temperature) + "\xB0 | New Tab";
+        document.title = Math.round(currentWeather.temp) + "\xB0 | New Tab";
       }
       weatherRepeater = setInterval(() => {
         getWeather();
@@ -117,14 +112,13 @@ const Weather = ({ bgColor, unit }) => {
     }
 
     if (!process.env.REACT_APP_WEATHER_KEY) {
-      console.log("No DarkSky api key present");
-      setCurrentWeather(sampleData.currentlyData);
-      setFutureWeather(sampleData.dailyData);
+      console.log("No Open Weather Map API key present");
+      setApiMissing(true);
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);
 
-  const enterPress = event => {
+  const enterPress = (event) => {
     if (event.key === "Enter") {
       if (event.target.value.trim() !== "") {
         setLocation(event.target.value);
@@ -142,12 +136,12 @@ const Weather = ({ bgColor, unit }) => {
       if (window.innerWidth > 950) {
         setMaxDays(6);
       } else {
-        setMaxDays(Math.floor(window.innerWidth/950*7)-1)
+        setMaxDays(Math.floor((window.innerWidth / 950) * 7) - 1);
       }
     }
     handleResize();
     window.addEventListener("resize", handleResize);
-    return _ => {
+    return (_) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -196,7 +190,6 @@ const Weather = ({ bgColor, unit }) => {
               current={currentWeather}
               future={futureWeather.slice(0, maxDays)}
               alert={alertWeather}
-              bgColor={bgColor}
               location={locationData}
               unit={unit}
             />
@@ -205,6 +198,7 @@ const Weather = ({ bgColor, unit }) => {
           )}
         </span>
       )}
+      {apiMissing && <div>API key not available</div>}
     </div>
   );
 };

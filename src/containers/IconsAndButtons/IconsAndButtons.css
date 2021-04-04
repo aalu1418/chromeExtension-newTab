@@ -1,5 +1,5 @@
 .Frame {
-  position:fixed;
+  position: fixed;
   bottom: 0;
   right: 0;
   /* height: 100vh; */
@@ -21,18 +21,16 @@
   flex-wrap: wrap-reverse;
 }
 
-.IconsAndButtons-ColorPicker {
-  margin: 1rem 1rem;
-}
-
 .IconsAndButtons-UnitToggle {
   display: flex;
   justify-content: space-around;
   margin: 1rem;
+  align-items: center;
+  flex-direction: column;
 }
 
 .UnitToggle-Button {
-  width: 40%;
+  width: 5rem;
   padding: 0.5rem;
   color: inherit;
   background-color: inherit;
@@ -40,6 +38,7 @@
   border-radius: 0.75rem;
   border-color: inherit;
   cursor: pointer;
+  margin: 1rem 0;
 }
 
 .UnitToggle-Button.Selected {
@@ -63,7 +62,8 @@
   display: flex;
   flex-direction: column;
   /* border: 1pt solid white; */
-  max-width: 10rem;
+  max-width: 11rem;
+  margin: 0.5rem 0;
 }
 
 .Logos > a {
@@ -89,5 +89,4 @@
 .CatGif > img {
   border-radius: 20px;
   height: 6rem;
-
 }

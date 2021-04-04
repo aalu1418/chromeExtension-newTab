@@ -11,7 +11,7 @@
   max-height: 100vh;
   max-width: 100vw;
   overflow: hidden;
-  /* background-color: red; */
-  /* color: black; */
+  background-color: black;
+  color: white;
   font-size: 18pt;
 }

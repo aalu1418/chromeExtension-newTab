@@ -9,7 +9,7 @@ import {
 import { WeatherDisplay } from "../../components/WeatherDisplay/WeatherDisplay";
 
 //component for all weather data + inputting location
-const Weather = ({ bgColor, unit }) => {
+const Weather = ({ unit }) => {
   const [location, setLocation] = React.useState(null);
   const [newLocation, setNewLocation] = React.useState(false);
   const [locationData, setLocationData] = React.useState(
@@ -89,8 +89,7 @@ const Weather = ({ bgColor, unit }) => {
             setAlertWeather({});
           }
           updateLocalStorage(storagePayload);
-          document.title =
-            Math.round(data.current.temp) + "\xB0 | New Tab";
+          document.title = Math.round(data.current.temp) + "\xB0 | New Tab";
         });
     };
 
@@ -105,8 +104,7 @@ const Weather = ({ bgColor, unit }) => {
         getWeather();
         setNewLocation(false);
       } else {
-        document.title =
-          Math.round(currentWeather.temp) + "\xB0 | New Tab";
+        document.title = Math.round(currentWeather.temp) + "\xB0 | New Tab";
       }
       weatherRepeater = setInterval(() => {
         getWeather();
@@ -115,7 +113,7 @@ const Weather = ({ bgColor, unit }) => {
 
     if (!process.env.REACT_APP_WEATHER_KEY) {
       console.log("No Open Weather Map API key present");
-      setApiMissing(true)
+      setApiMissing(true);
     }
     return () => clearInterval(weatherRepeater);
   }, [newLocation, locationData, currentWeather]);
@@ -192,7 +190,6 @@ const Weather = ({ bgColor, unit }) => {
               current={currentWeather}
               future={futureWeather.slice(0, maxDays)}
               alert={alertWeather}
-              bgColor={bgColor}
               location={locationData}
               unit={unit}
             />

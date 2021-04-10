@@ -73,7 +73,7 @@ const Weather = ({ unit }) => {
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setCurrentWeather(data.current);
           setFutureWeather(data.daily.slice(0, 6));
           let storagePayload = {
@@ -99,8 +99,8 @@ const Weather = ({ unit }) => {
     ) {
       //only run getWeather if saved data is too old (only happens on page load)
       const currentTime = moment().add(-10, "m").unix();
-      // console.log(currentWeather.time, currentTime);
-      if (currentWeather.time <= currentTime || newLocation) {
+      // console.log(currentWeather.dt, currentTime);
+      if (currentWeather.dt <= currentTime || newLocation) {
         getWeather();
         setNewLocation(false);
       } else {

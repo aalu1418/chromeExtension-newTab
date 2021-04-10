@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
 import moment from "moment";
 
-const corsProxy = "https://thingproxy.freeboard.io/fetch/";
+const corsProxy = "http://api.allorigins.win/raw?url=";
 
 export const ttcAlerts = async () => {
   console.log("checking TTC alerts");
@@ -13,7 +13,7 @@ export const ttcAlerts = async () => {
 
 const getAlerts = async () => {
   const searchUrl =
-    "https://www.ttc.ca/Service_Advisories/all_service_alerts.jsp";
+    "http://www.ttc.ca/Service_Advisories/all_service_alerts.jsp";
   const response = await fetch(corsProxy + searchUrl); // fetch page
 
   const htmlString = await response.text();

@@ -57,8 +57,6 @@ Instructions:
 ---
 ### Resources:
 [Storing api keys](https://medium.com/better-programming/using-environment-variables-in-reactjs-9ad9c5322408)  
-~[CORS-Anywhere](https://cors-anywhere.herokuapp.com/) - [github](https://github.com/Rob--W/cors-anywhere)~  
-[thingProxy](https://github.com/Freeboard/thingproxy)  
 [CORS proxies](https://nordicapis.com/10-free-to-use-cors-proxies/)  
 [Simple Chrome Extension](https://medium.com/javascript-in-plain-english/https-medium-com-javascript-in-plain-english-how-to-build-a-simple-chrome-extension-in-vanilla-javascript-e52b2994aeeb)  
 [React + Chrome Extension](https://medium.com/@gilfink/building-a-chrome-extension-using-react-c5bfe45aaf36)  

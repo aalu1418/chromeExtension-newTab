@@ -60,9 +60,8 @@ export const CurrentWeather = ({
   }
 
   if (Object.keys(alert).length !== 0) {
-    // console.log(alert.uri);
-    const output = <a href={alert.uri}>{alert.title}</a>;
-    weatherData.splice(1, 0, <DescriptionText text={output} />);
+    // console.log(alert);
+    weatherData.splice(1, 0, <DescriptionText text={alert.event} />);
   }
 
   React.useEffect(() => {

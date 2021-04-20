@@ -61,7 +61,7 @@ export const CurrentWeather = ({
 
   if (Object.keys(alert).length !== 0) {
     // console.log(alert);
-    weatherData.splice(1, 0, <DescriptionText text={alert.event} />);
+    weatherData.splice(1, 0, <DescriptionText text={alert.description.slice(0, 45)+'...'} />);
   }
 
   React.useEffect(() => {

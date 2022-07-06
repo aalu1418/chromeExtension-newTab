@@ -1,11 +1,11 @@
 {
   "short_name": "New Tab Weather",
   "name": "New Tab Weather",
-  "version": "1.0",
-  "description": "New tab extension that shows a clock, weather, and TTC alerts when in Toronto - built using React and powered by Open Weather Map",
-
-  "icons": {"128": "./favicon.png" },
-
+  "version": "2.0",
+  "description": "Simple new tab extension that shows weather",
+  "icons": {
+    "128": "./favicon.png"
+  },
   "manifest_version": 2,
   "incognito": "split",
   "chrome_url_overrides": {

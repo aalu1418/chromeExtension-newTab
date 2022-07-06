@@ -6,16 +6,15 @@ A small personal project to create a Google Chrome extension for a new tab page 
 
 ### Powered by:
 
-Weat
-Weatxher: [Open Weather Map](https://openweathermap.org)  
-Geocoding: [OpenStreetMap](https://openstreetmap.org/)  
-Icons: [Open Weather Map](https://openweathermap.org/weather-conditions) & [Font Awesome](https://fontawesome.com/)
+Weather: [NOAA](https://www.weather.gov/documentation/services-web-api)  
+Location: [IPAPI](https://ipapi.co/)  
+Icons: [@erikflowers/weather-icons](https://github.com/erikflowers/weather-icons)
 
 ---
 
 ### Application Views:
 
-![](./screenshot0.png)
+Check out the hosted link!
 
 ---
 
@@ -30,7 +29,6 @@ But simpler, more stripped down and customizable.
 Future improvements:
 
 - Weather alerts
-- Hosted on github pages
 - manually configured location
 - .crx file built in CI
 
@@ -38,11 +36,7 @@ Future improvements:
 
 ### Building Extension
 
-Note: The original purpose of this project was to customize a home screen - not for large scale deployment/distribution. Please use the various APIs according to policies specified by Open Weather Map. The purpose of this document is to simply relay how to deploy this extension on a personal platform.
-
-Needed (API keys):
-
-- [Open Weather Map](https://openweathermap.org)
+Note: The original purpose of this project was to customize a home screen - not for large scale deployment/distribution. Please use the various APIs according to policies specified. The purpose of this document is to simply relay how to deploy this extension on a personal platform.
 
 Instructions:
 

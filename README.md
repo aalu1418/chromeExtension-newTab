@@ -31,6 +31,7 @@ Future improvements:
 
 - Weather alerts
 - Hosted on github pages
+- manually configured location
 - .crx file built in CI
 
 ---

@@ -12,7 +12,5 @@
     "newtab": "index.html"
   },
   "content_security_policy": "script-src 'self' 'sha256-w4THnoMYzI/cxW8WBIPLvRof0ou/Mn9fuPSFMHLKuww='; object-src 'self'",
-  "permissions": [
-    "activeTab"
-  ]
+  "permissions": ["activeTab"]
 }

@@ -52,7 +52,7 @@ body {
 }
 
 #hourly-weather {
-  font-size: 5vh;
+  font-size: 2.5vw;
   width: 20vw;
 }
 
@@ -62,16 +62,18 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 2vh;
+  margin: 2vw;
 }
 
 .hourly-img {
   filter: invert();
-  height: 10vh;
+  width: 20%;
+  max-height: 10vh;
 }
 
 .hourly-time {
-  width: 15vh;
+  width: 40%;
+  max-width: 15vw;
   text-align: right;
 }
 
@@ -92,7 +94,7 @@ body {
 }
 
 .current-temp {
-  font-size: 10vh;
+  font-size: 11vh;
   padding-right: 1rem;
 }
 
@@ -103,10 +105,11 @@ body {
 
 .current-detail {
   height: 3vh;
+  font-size: 1.1vw;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 10vw;
-  max-width: 10rem;
+  max-width: 13rem;
   padding-left: 1rem;
 }

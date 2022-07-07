@@ -14,7 +14,7 @@ Icons: [@erikflowers/weather-icons](https://github.com/erikflowers/weather-icons
 
 ### Application Views:
 
-Check out the hosted link!
+Check out the hosted [link](https://aalu1418.github.io/chromeExtension-newTab/)!
 
 ---
 
@@ -30,9 +30,14 @@ Future improvements:
 
 - Weather alerts
 - manually configured location
-- .crx file built in CI
 
 ---
+
+### Download Extension
+
+Download the `.crx` file from the latest [github release](https://github.com/aalu1418/chromeExtension-newTab/releases)
+
+Note: Use the following instructions below to build the `.crx` file locally.
 
 ### Building Extension
 
@@ -43,10 +48,10 @@ Instructions:
 1. `git clone https://github.com/aalu1418/chromeExtension-newTab`
 1. In Google Chrome, go to `chrome://extensions` and enable `Developer mode`
 1. Select `Pack extension` and browse to the `Extension root directory`
-1. Select `Pack extension` and two files will be generated `build.crx` and `build.pem`
+1. Select `Pack extension` and two files will be generated `chromeExtension-newTab.crx` and `chromeExtension-newTab.pem`
 
 ### Installing Extension
 
 (note: make sure `Developer mode` is enabled)
 
-1. From your file browser, click and drag `build.crx` onto the `chrome://extensions` page and install the extension
+1. From your file browser, click and drag `chromeExtension-newTab.crx` onto the `chrome://extensions` page and install the extension

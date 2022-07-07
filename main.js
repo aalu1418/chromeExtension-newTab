@@ -133,14 +133,18 @@ const hourlyWeather = (w) => {
 
   return `<div class="hourly">
     <div class="hourly-time">${h} ${suffix}</div>
-    <img class="hourly-img" src="${icon(w.isDaytime, w.icon)}" title="${w.shortForecast}"/>
+    <img class="hourly-img" src="${icon(w.isDaytime, w.icon)}" title="${
+    w.shortForecast
+  }"/>
     <div class="hourly-temp">${w.temperature}&deg;</div>
     </div>`;
 };
 
 // build current weather component
 const currentWeather = (w) => {
-  return `<img class="current-img" src="${icon(w.isDaytime, w.icon)}" title="${w.shortForecast}"/>
+  return `<img class="current-img" src="${icon(w.isDaytime, w.icon)}" title="${
+    w.shortForecast
+  }"/>
     <div class="current">
       <div class="current-temp">${w.temperature}&deg;</div>
       <div class="current-details">
@@ -199,12 +203,12 @@ const iconMap = {
 
 const icon = (isDaytime, url) => {
   const key = Object.keys(iconMap).reduce((previous, current) => {
-    return previous + (url.includes(current) ? current : "")
-  }, "")
+    return previous + (url.includes(current) ? current : "");
+  }, "");
 
-  let index = isDaytime ? 0 : 1
-  index = iconMap[key].length == 2 ? index : 0
+  let index = isDaytime ? 0 : 1;
+  index = iconMap[key].length == 2 ? index : 0;
 
-  console.debug(key, iconMap[key][index])  
+  console.debug(key, iconMap[key][index]);
   return `https://raw.githubusercontent.com/erikflowers/weather-icons/master/svg/wi-${iconMap[key][index]}.svg`;
 };

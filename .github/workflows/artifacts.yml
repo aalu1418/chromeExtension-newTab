@@ -11,20 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install zip
-        run: sudo apt-get install zip
-      - name: Generate zip
-        run: zip -r build/extension.zip
-      - name: Generate .crx
-        uses: cardinalby/webext-buildtools-chrome-crx-action@v2
-        with:
-          # zip file made at the packExtensionDir step
-          zipFilePath: "build/extension.zip"
-          crxFilePath: "build/newTab.crx"
-          privateKey: "noSecretNeeded"
+      - name: Install chromium
+        run: sudo apt install chromium-browser
+      - name: Install xvfb + dependencies
+        # https://stackoverflow.com/questions/60304251/unable-to-open-x-display-when-trying-to-run-google-chrome-on-centos-rhel-7-5
+        run: |
+          sudo apt-get -y install xorg xvfb gtk2-engines-pixbuf
+          sudo apt-get -y install dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi xfonts-cyrillic xfonts-scalable
+          Xvfb -ac :99 -screen 0 1280x1024x16 &
+      - run: chromium-browser --version
+      - name: Build artifacts
+        run: |
+          cd ..
+          ls -a
+          DISPLAY=:99 chromium-browser --pack-extension=./chromeExtension-newTab
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/extension.zip
-            build/newTab.crx
+            ../chromeExtension-newTab.crx

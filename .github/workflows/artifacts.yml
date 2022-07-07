@@ -11,14 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install zip
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Yarn install
+        run: yarn install --frozen-lockfile
+      - name: Install zip
         run: sudo apt-get install zip
       - name: Generate zip
-        run: zip -r build/extension.zip
+        run: |
+          mkdir build 
+          zip -r build/extension.zip .
       - name: Generate .crx
         uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
-          # zip file made at the packExtensionDir step
           zipFilePath: "build/extension.zip"
           crxFilePath: "build/newTab.crx"
           privateKey: "noSecretNeeded"

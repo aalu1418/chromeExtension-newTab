@@ -37,22 +37,29 @@ $(document).ready(async () => {
   }
 
   // query weather
-  try {
-    if (refresh) {
+  if (refresh) {
+    try {
       console.log("refreshing weather data");
       weather = await fetchWeather(res.longitude, res.latitude);
+    } catch (err) {
+      // simple retry
+      try {
+        await new Promise((r) => setTimeout(r, 1000)); // sleep for 2s
+        console.log("retrying fetch weather");
+        weather = await fetchWeather(res.longitude, res.latitude);
+      } catch (err) {
+        $("#err-img").attr("src", `${iconURL}volcano.svg`);
+        $("#err-header").text("[ERROR] Weather Unavailable");
+        console.error("weather not available", err);
+        return;
+      }
     }
-  } catch (err) {
-    $("#err-img").attr("src", `${iconURL}volcano.svg`);
-    $("#err-header").text("[ERROR] Weather Unavailable");
-    console.error("weather not available", err);
-    return;
   }
 
   $(".weather").removeAttr("style");
   $("#unavailable").hide();
 
-  console.debug(weather);
+  console.debug("weather data", weather);
   localStorage.setItem(
     cacheName,
     JSON.stringify({
@@ -96,16 +103,18 @@ const fetchWeather = (long, lat) => {
       let initdata = await $.get(
         `https://api.weather.gov/points/${lat},${long}`
       );
-      console.debug(initdata);
+      console.debug("initdata", initdata);
 
       // get hourly forecast
-      let data = await $.get(initdata.properties.forecastHourly);
-      console.debug(data);
-      let hourly = data.properties.periods;
+      let getHourly = $.get(initdata.properties.forecastHourly);
 
       // get detailed forecast
-      let detaildata = await $.get(initdata.properties.forecastGridData);
-      console.debug(detaildata);
+      let getDetailed = $.get(initdata.properties.forecastGridData);
+
+      let [data, detaildata] = await Promise.all([getHourly, getDetailed]);
+      console.debug("hourly", data);
+      console.debug("detailed", detaildata);
+      let hourly = data.properties.periods;
 
       // post process data
       const time = Date.now();

@@ -167,8 +167,8 @@ const keyValue = (key, value) => {
 const iconMap = {
   skc: ["day-sunny", "night-clear"],
   few: ["day-sunny-overcast", "night-alt-partly-cloudy"],
-  sct: ["day-cloudy-high", "night-alt-cloudy-high"],
-  bkn: ["day-cloudy", "night-alt-cloudy"],
+  sct: ["day-cloudy", "night-alt-cloudy"],
+  bkn: ["day-cloudy-high", "night-alt-cloudy-high"],
   ovc: ["cloudy"],
   wind_skc: ["day-windy", "windy"],
   wind_few: ["day-cloudy-gusts", "night-alt-cloudy-gusts"],
@@ -199,11 +199,15 @@ const iconMap = {
   cold: ["snowflake-cold"],
   blizzard: ["day-snow-wind", "night-alt-snow-wind"],
   fog: ["day-fog", "night-fog"],
+  "": ["na"], // default icon if not found
 };
 
 const icon = (isDaytime, url) => {
   const key = Object.keys(iconMap).reduce((previous, current) => {
-    return previous + (url.includes(current) ? current : "");
+    // return new match if url includes key + key is greater than existing key (default to longest match)
+    return url.includes(current) && current.length > previous.length
+      ? current
+      : previous;
   }, "");
 
   let index = isDaytime ? 0 : 1;

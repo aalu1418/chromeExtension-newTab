@@ -167,8 +167,8 @@ const keyValue = (key, value) => {
 const iconMap = {
   skc: ["day-sunny", "night-clear"],
   few: ["day-sunny-overcast", "night-alt-partly-cloudy"],
-  sct: ["day-cloudy-high", "night-alt-cloudy-high"],
-  bkn: ["day-cloudy", "night-alt-cloudy"],
+  sct: ["day-cloudy", "night-alt-cloudy"],
+  bkn: ["day-cloudy-high", "night-alt-cloudy-high"],
   ovc: ["cloudy"],
   wind_skc: ["day-windy", "windy"],
   wind_few: ["day-cloudy-gusts", "night-alt-cloudy-gusts"],

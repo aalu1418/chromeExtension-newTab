@@ -199,11 +199,13 @@ const iconMap = {
   cold: ["snowflake-cold"],
   blizzard: ["day-snow-wind", "night-alt-snow-wind"],
   fog: ["day-fog", "night-fog"],
+  "": ["na"], // default icon if not found
 };
 
 const icon = (isDaytime, url) => {
   const key = Object.keys(iconMap).reduce((previous, current) => {
-    return previous + (url.includes(current) ? current : "");
+    // return new match if url includes key + key is greater than existing key (default to longest match)
+    return url.includes(current) && current.length > previous.length ? current : previous;
   }, "");
 
   let index = isDaytime ? 0 : 1;

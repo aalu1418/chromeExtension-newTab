@@ -205,7 +205,9 @@ const iconMap = {
 const icon = (isDaytime, url) => {
   const key = Object.keys(iconMap).reduce((previous, current) => {
     // return new match if url includes key + key is greater than existing key (default to longest match)
-    return url.includes(current) && current.length > previous.length ? current : previous;
+    return url.includes(current) && current.length > previous.length
+      ? current
+      : previous;
   }, "");
 
   let index = isDaytime ? 0 : 1;

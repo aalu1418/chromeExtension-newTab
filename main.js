@@ -1,39 +1,58 @@
 const cacheName = "aalu1418/chromeExtension";
+const iconURL = "https://raw.githubusercontent.com/erikflowers/weather-icons/master/svg/wi-"
 
 $(document).ready(async () => {
-  $(".weather").hide();
-
   let weather;
   let refresh = true;
   let cache = localStorage.getItem(cacheName);
+  let cacheLoc
+  
   if (cache != null) {
     console.debug("cache is present");
     const temp = JSON.parse(cache);
     weather = temp.data;
+    cacheLoc = temp.location
     refresh = Date.now() - temp.timestamp > 1000 * 60 * 15; // wait for 15 minute timeout
   } else {
     console.debug("cache is empty");
   }
 
+  // query location
+  let locationStr = ""
+  let res
   try {
-    if (refresh) {
-      console.log("refreshing data");
-      let res = await checkInternet();
-      console.debug(res);
-      weather = await fetchWeather(res.longitude, res.latitude);
-    }
+    console.debug("checking location");
+    res = await checkInternet();
+    console.debug(res);
+    locationStr = `${res.city}, ${res.country_code == "US" ? res.region : res.country_name}`
+    $("#err-location").text(`(${locationStr})`)
+    refresh = refresh || locationStr != cacheLoc // refresh cache if location is different
   } catch (err) {
-    console.error("internet/location/weather not available", err);
+    console.error("internet/location not available", err);
     return;
   }
 
-  $(".weather").show();
+  // query weather
+  try {
+    if (refresh) {
+      console.log("refreshing weather data")
+      weather = await fetchWeather(res.longitude, res.latitude);
+    }
+  } catch (err) {
+    $("#err-header").text("Weather Unavailable")
+    $("#err-img").attr("src",`${iconURL}volcano.svg`)
+    console.error("weather not available", err)
+    return;
+  }
+
+  $(".weather").removeAttr("style");
   $("#unavailable").hide();
 
   console.debug(weather);
   localStorage.setItem(
     cacheName,
     JSON.stringify({
+      location: locationStr,
       timestamp: Date.now(),
       data: weather,
     })
@@ -43,7 +62,7 @@ $(document).ready(async () => {
   $("title").text(`${weather[0].temperature}\xB0 | New Tab`);
 
   // add current weather
-  $("#current-weather").html(currentWeather(weather[0]));
+  $("#current-weather").html(currentWeather(weather[0], locationStr));
 
   // add hourly weather
   let hourlyHtml = "";
@@ -133,18 +152,16 @@ const hourlyWeather = (w) => {
 
   return `<div class="hourly">
     <div class="hourly-time">${h} ${suffix}</div>
-    <img class="hourly-img" src="${icon(w.isDaytime, w.icon)}" title="${
-    w.shortForecast
-  }"/>
+    <img class="hourly-img" src="${icon(w.isDaytime, w.icon)}" title="${w.shortForecast
+    }"/>
     <div class="hourly-temp">${w.temperature}&deg;</div>
     </div>`;
 };
 
 // build current weather component
-const currentWeather = (w) => {
-  return `<img class="current-img" src="${icon(w.isDaytime, w.icon)}" title="${
-    w.shortForecast
-  }"/>
+const currentWeather = (w, loc) => {
+  return `<img class="current-img" src="${icon(w.isDaytime, w.icon)}" title="${w.shortForecast
+    }"/>
     <div class="current">
       <div class="current-temp">${w.temperature}&deg;</div>
       <div class="current-details">
@@ -153,7 +170,8 @@ const currentWeather = (w) => {
         ${keyValue("Humidity", `${w.humidity}%`)}
         ${keyValue("Wind", `${w.windSpeed} ${w.windDirection}`)}
       </div>
-    </div>`;
+    </div>
+    <div>(${loc})</div>`;
 };
 
 // build key/value pair component
@@ -214,5 +232,5 @@ const icon = (isDaytime, url) => {
   index = iconMap[key].length == 2 ? index : 0;
 
   console.debug(key, iconMap[key][index]);
-  return `https://raw.githubusercontent.com/erikflowers/weather-icons/master/svg/wi-${iconMap[key][index]}.svg`;
+  return `${iconURL}${iconMap[key][index]}.svg`;
 };
